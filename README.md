@@ -1,39 +1,27 @@
-# leo Standard Library
+# Leo Standard Library
 
-Minimalistic standard library for the Leo Language
+Standard library for the Leo Language
 
-## Types
+## Read the docs
 
-### float
-See https://github.com/AleoHQ/leo/issues/133
+The preliminary documentacion is available [here](docs)
 
-### date
+## How to use
 
-## Modules
+To use the project you need to have [nix](https://nix.dev/tutorials/install-nix) installed.
 
-### String
+To get into the nix-shell, use:
 
-### Array
+`nix-shell`
 
-### Integer
+If it's your first time using this project:
 
-### Search
+`make init`
 
-#### Binary Search
+To build the project:
 
-### Math
+`make build`
 
-#### Trigonometry
+To run the tests:
 
-#### Linear Algebra
-
-#### Probabilistics
-
-#### Statistics
-
-### Machine learning
-
-### Hashing
-#### Perdersan
-#### Poseidon
-#### Merkle tree
+`make test`
