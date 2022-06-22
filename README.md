@@ -1,6 +1,6 @@
 # Leo Standard Library
 
-Minimalistic standard library for the Leo Language
+Standard library for the Leo Language
 
 ## Types
 
