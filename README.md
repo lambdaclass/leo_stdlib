@@ -1,4 +1,4 @@
-# leo Standard Library
+# Leo Standard Library
 
 Minimalistic standard library for the Leo Language
 
