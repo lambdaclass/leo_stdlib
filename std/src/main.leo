@@ -1,5 +1,5 @@
 import integer.mod.mod;
-import integer.gcd.*;
+import integer.gcd.gcd;
 
 function main() -> u32  {
     return 0;

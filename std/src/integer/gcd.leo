@@ -1,4 +1,4 @@
-import mod.mod;
+import integer.mod.mod;
 
 function gcd(a: i32, b: i32) -> i32 {
     let result: i32 = (a > b) ? b : a; //el minimo entre a y b
