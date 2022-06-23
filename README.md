@@ -96,8 +96,8 @@ parse(string: [char; n]) -> i32
 ```
 Parses a text representation of an integer.
 
-# String Module
+## String Module
 
-## Functions
+### Functions
 
 
