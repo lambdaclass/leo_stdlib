@@ -16,7 +16,6 @@ function test_remainder_with_small_positive_number_and_small_positive_divisor() 
     console.assert(mod(24, 4) == 0); 
 }
 
-
 @test() 
 function test_modulo_with_small_positive_number_and_small_negative_divisor() {
     console.assert(mod(0, -4) == 0);
