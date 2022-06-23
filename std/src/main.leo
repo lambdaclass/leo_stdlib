@@ -4,7 +4,8 @@ function main() -> u32  {
     return 0;
 }
 
-@test  
+// poseidon() tests 
+@test()  
 function test_poseidon_is_same () {
     let hash_f1 = poseidon(123, 456);
     let hash_f2 = poseidon(123, 456);
@@ -12,7 +13,7 @@ function test_poseidon_is_same () {
     console.assert(hash_f1==hash_f2);
 }
 
-@test  
+@test()  
 function test_poseidon_is_different () {
     let hash_f1 = poseidon(123, 456);
     let hash_f2 = poseidon(456, 123);
