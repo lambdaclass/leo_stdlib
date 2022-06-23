@@ -9,4 +9,3 @@ function mod(num: i32, divisor: i32) -> i32 {
 
     return num - (num / divisor * divisor);    
 }
-

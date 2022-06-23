@@ -4,6 +4,7 @@ import integer.gcd.gcd;
 function main() -> u32  {
     return 0;
 }
+
 //tests integer-mod 
 @test() 
 function test_remainder_with_small_positive_number_and_small_positive_divisor() {
@@ -16,7 +17,6 @@ function test_remainder_with_small_positive_number_and_small_positive_divisor() 
     console.assert(mod(23, 4) == 3); 
     console.assert(mod(24, 4) == 0); 
 }
-
 
 @test() 
 function test_modulo_with_small_positive_number_and_small_negative_divisor() {
@@ -143,7 +143,6 @@ function test_remainder_with_large_negative_number_and_large_negative_divisor() 
 }
 
 //test integer-gcd
-
 @test
 function test_gcd_similar_numbers() {
     /* let a = 188i32;
