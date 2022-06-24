@@ -1,5 +1,6 @@
 import hashing.*;
 import integer.*;
+import array.*;
 
 function main() -> u32  {
     return 0;
@@ -424,3 +425,38 @@ function test_even_number_is_not_odd() {
     console.assert(!is_odd(2524));
     console.assert(!is_odd(2147483646));
 }
+
+// array min() tests
+@test()
+function test_minimum_element_is_found_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 0, 5, 6, 7];
+    let min: i32 = 0;
+
+    console.assert(min == min(array));
+}
+
+@test()
+function test_minimum_element_is_found_in_array_when_minimum_is_the_first_element() {
+    let array: [i32; 8] = [-4, 2, 3, 4, 0, 5, 6, 7];
+    let min: i32 = -4;
+
+    console.assert(min == min(array));
+}
+
+@test()
+function test_minimum_element_is_found_in_array_when_minimum_is_the_last_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 0, 5, 6, -7];
+    let min: i32 = -7;
+
+    console.assert(min == min(array));
+}
+
+@test()
+function test_minimum_element_is_found_in_array_when_minimum_is_a_repeated_element() {
+    let array: [i32; 8] = [1, 2, -7, 4, 0, -7, 6, -7];
+    let min: i32 = -7;
+
+    console.assert(min == min(array));
+}
+
+
