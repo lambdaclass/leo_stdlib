@@ -1,5 +1,6 @@
 import hashing.*;
 import integer.*;
+import array.*;
 
 function main() -> u32  {
     return 0;
@@ -423,4 +424,37 @@ function test_even_number_is_not_odd() {
     console.assert(!is_odd(28));
     console.assert(!is_odd(2524));
     console.assert(!is_odd(2147483646));
+}
+
+// array max() tests
+@test()
+function test_maximum_element_is_found_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 8, 5, 6, 7];
+    let max: i32 = 8;
+
+    console.assert(max == max(array));
+}
+
+@test()
+function test_maximum_element_is_found_in_array_when_maximum_is_the_first_element() {
+    let array: [i32; 8] = [34, 2, 3, 4, 5, 6, 7, 8];
+    let max: i32 = 34;
+
+    console.assert(max == max(array));
+}
+
+@test()
+function test_maximum_element_is_found_in_array_when_maximum_is_the_last_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 97];
+    let max: i32 = 97;
+
+    console.assert(max == max(array));
+}
+
+@test()
+function test_maximum_element_is_found_in_array_when_maximum_is_a_repeated_element() {
+    let array: [i32; 8] = [1, 2, 67, 4, 0, 67, 6, 67];
+    let max: i32 = 67;
+
+    console.assert(max == max(array));
 }
