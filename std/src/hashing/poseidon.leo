@@ -1,8 +1,8 @@
-function poseidon(a_field: field, another_field: field) -> field {
+function poseidon(field1: field, field2: field) -> field {
     const n_rounds_f: u32 = 8;
     const n_rounds_p: u32 = 57;
     const t: u32 = 3;
-    let state: [field;3] = [0,a_field,another_field];
+    let state: [field;3] = [0,field1,field2];
 
     for i in 0..(n_rounds_f + n_rounds_p) {
         state = ark(state, i*t);
