@@ -45,7 +45,7 @@ These implementation is based on the Poseidon RS implementation, which itself is
 The Constants are generated for bls 12 377 using [this reference](https://extgit.iaik.tugraz.at/krypto/hadeshash/-/blob/master/code/generate_parameters_grain.sage)
 
 ```
-get_markle_root(fields_array: [field;8]) -> field
+merkle_root(fields_array: [field;8]) -> field
 ```
 Computes a merkle root from an fixed 8 element array of fields.
 This implementation uses the poseidon algorithm for hashing.
