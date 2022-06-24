@@ -30,6 +30,36 @@ This is a preliminary documentacion. [MkDocs](https://www.mkdocs.org/) will be u
 
 ### Functions
 
+```
+count(array: [i32; 8]) -> i32
+```
+Returns the size of the given `array`. 
+
+```
+delete(array: [i32; 8], element: i32) -> [i32; 7]
+```
+Deletes the given `element` from the given `array`.
+
+```
+min(array: [i32; 8]) -> i32
+```
+Returns the min element in the given `array`.
+
+```
+max(array: [i32; 8]) -> i32
+```
+Returns the max element in the given `array`.
+
+```
+sum(array: [i32; 8]) -> i32
+```
+Returns the sum of all elements in the given `array`.
+
+```
+reverse(array: [i32; 8]) -> [i32; 8]
+```
+Reverses the elements in the given `array`.
+
 ## Hashing
 
 ### Functions
@@ -118,4 +148,4 @@ Converts all the characters in the given string to lowercase.
 ```
 to_upper(string: [char; 16]) -> [char; 16]
 ```
-Converts all the characters in the given string to upercase.
+Converts all the characters in the given string to uppercase.
