@@ -1,10 +1,5 @@
-import integer.to_string.to_string;
-import integer.mod.mod;
-import hashing.poseidon.poseidon;
-import hashing.merkle_tree.merkle_root;
-import integer.mod.mod;
-import integer.is_even.*;
-import integer.is_odd.is_odd;
+import hashing.*;
+import integer.*;
 
 function main() -> u32  {
     return 0;
