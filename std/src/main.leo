@@ -1,8 +1,55 @@
+
 import integer.to_string.to_string;
 import integer.mod.mod;
+import hashing.poseidon.poseidon;
+import hashing.merkle_tree.merkle_root;
+import integer.mod.mod;
+import integer.is_even.*;
+import integer.is_odd.is_odd;
 
 function main() -> u32  {
     return 0;
+}
+
+
+// poseidon() tests 
+@test()  
+function test_poseidon_is_same () {
+    let hash_f1 = poseidon(123field, 456field);
+    let hash_f2 = poseidon(123field, 456field);
+
+    console.assert(hash_f1==hash_f2);
+}
+
+@test()  
+function test_poseidon_is_different () {
+    let hash_f1 = poseidon(123field, 456field);
+    let hash_f2 = poseidon(456field, 123field);
+
+    console.assert(hash_f1!=hash_f2);
+}
+
+// merkle_tree_root() trests
+@test()  
+function test_merkle_root_is_same () {
+    let array1: [field;8] = [1,2,3,4,5,6,7,8];
+    let array2: [field;8] = [1,2,3,4,5,6,7,8];
+
+    let markle_root_1 = merkle_root(array1);
+    let markle_root_2 = merkle_root(array2);
+
+    console.assert(markle_root_1==markle_root_2);
+}
+
+@test()  
+function test_merkle_root_is_different () {
+    let array1: [field;8] = [1,2,3,4,5,6,7,8];
+    let array2: [field;8] = [2,1,3,4,5,6,7,8];
+
+    let markle_root_1 = merkle_root(array1);
+    let markle_root_2 = merkle_root(array2);
+
+    console.assert(markle_root_1!=markle_root_2);
 }
 
 // mod() tests
@@ -142,7 +189,6 @@ function test_remainder_with_large_negative_number_and_large_negative_divisor() 
     console.assert(mod(-2147483645, -2147483646) == 2147483645);
 }
 
-// to_string() tests
 @test()
 function test_zero_to_string() {
     console.assert("00000000000" == to_string(0));
@@ -352,3 +398,35 @@ function test_smallest_possible_integer_to_string() {
     console.assert("-2147483646" == to_string(-2147483646));
 }
 
+// is_even() tests
+@test()
+function test_even_number_is_even() {
+    console.assert(is_even(2));
+    console.assert(is_even(28));
+    console.assert(is_even(2524));
+    console.assert(is_even(2147483646));
+}
+
+@test()
+function test_odd_number_is_not_even() {
+    console.assert(!is_even(3));
+    console.assert(!is_even(25));
+    console.assert(!is_even(323));
+    console.assert(!is_even(2147483645));
+
+// is_odd() tests
+@test()
+function test_odd_number_is_odd() {
+    console.assert(is_odd(3));        
+    console.assert(is_odd(25));
+    console.assert(is_odd(323));
+    console.assert(is_odd(2147483645));
+}
+
+@test()
+function test_even_number_is_not_odd() {
+    console.assert(!is_odd(2));
+    console.assert(!is_odd(28));
+    console.assert(!is_odd(2524));
+    console.assert(!is_odd(2147483646));
+}
