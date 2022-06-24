@@ -413,6 +413,7 @@ function test_odd_number_is_not_even() {
     console.assert(!is_even(25));
     console.assert(!is_even(323));
     console.assert(!is_even(2147483645));
+}
 
 // is_odd() tests
 @test()
