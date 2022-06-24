@@ -1,4 +1,5 @@
 import integer.mod.mod;
+import integer.is_even.*;
 import integer.is_odd.is_odd;
 
 function main() -> u32  {
@@ -141,6 +142,22 @@ function test_remainder_with_large_negative_number_and_large_negative_divisor() 
     console.assert(mod(-2147483646, -1073741822) == 2);
     console.assert(mod(-2147483645, -2147483646) == 2147483645);
 }
+
+// is_even() tests
+@test()
+function test_even_number_is_even() {
+    console.assert(is_even(2));
+    console.assert(is_even(28));
+    console.assert(is_even(2524));
+    console.assert(is_even(2147483646));
+}
+
+@test()
+function test_odd_number_is_not_even() {
+    console.assert(!is_even(3));
+    console.assert(!is_even(25));
+    console.assert(!is_even(323));
+    console.assert(!is_even(2147483645));
 
 // is_odd() tests
 @test()
