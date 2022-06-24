@@ -5,7 +5,6 @@ function main() -> u32  {
     return 0;
 }
 
-
 // poseidon() tests 
 @test()  
 function test_poseidon_is_same () {
