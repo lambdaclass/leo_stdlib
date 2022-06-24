@@ -38,7 +38,7 @@ Returns the size of the given `array`.
 ```
 delete(array: [i32; 8], element: i32) -> [i32; 7]
 ```
-Deletes the given `element` from the given `array`.
+Deletes the first occurrence of the given `element` from the given `array`.
 
 ```
 min(array: [i32; 8]) -> i32
