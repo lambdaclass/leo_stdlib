@@ -1,5 +1,6 @@
 import integer.mod.mod;
 import integer.is_even.*;
+import integer.is_odd.is_odd;
 
 function main() -> u32  {
     return 0;
@@ -157,4 +158,20 @@ function test_odd_number_is_not_even() {
     console.assert(!is_even(25));
     console.assert(!is_even(323));
     console.assert(!is_even(2147483645));
+
+// is_odd() tests
+@test()
+function test_odd_number_is_odd() {
+    console.assert(is_odd(3));        
+    console.assert(is_odd(25));
+    console.assert(is_odd(323));
+    console.assert(is_odd(2147483645));
+}
+
+@test()
+function test_even_number_is_not_odd() {
+    console.assert(!is_odd(2));
+    console.assert(!is_odd(28));
+    console.assert(!is_odd(2524));
+    console.assert(!is_odd(2147483646));
 }
