@@ -1,4 +1,22 @@
-import integer.mod.mod;
+function mod(num: i32, divisor: i32) -> i32 {
+    if num < 0 {
+        num = -num;
+    }
+
+    if divisor < 0 {
+        divisor = -divisor;
+    }
+
+    return num - (num / divisor * divisor);    
+}
+
+function is_odd(num: i32) -> bool {
+    return mod(num, 2) != 0;
+}
+
+function is_even(num: i32) -> bool {
+    return mod(num, 2) == 0;
+}
 
 function to_string(num: i32) -> [char; 11] { // 10 is the number of digits that the biggest possible i32 has.
     let num_as_string: [char; 11] = ['0'; 11];

@@ -30,6 +30,36 @@ This is a preliminary documentacion. [MkDocs](https://www.mkdocs.org/) will be u
 
 ### Functions
 
+```
+count(array: [i32; 8]) -> i32
+```
+Returns the size of the given `array`. 
+
+```
+delete(array: [i32; 8], element: i32) -> [i32; 7]
+```
+Deletes the given `element` from the given `array`.
+
+```
+min(array: [i32; 8]) -> i32
+```
+Returns the min element in the given `array`.
+
+```
+max(array: [i32; 8]) -> i32
+```
+Returns the max element in the given `array`.
+
+```
+sum(array: [i32; 8]) -> i32
+```
+Returns the sum of all elements in the given `array`.
+
+```
+reverse(array: [i32; 8]) -> [i32; 8]
+```
+Reverses the elements in the given `array`.
+
 ## Hashing
 
 ### Functions
@@ -45,7 +75,7 @@ These implementation is based on the Poseidon RS implementation, which itself is
 The Constants are generated for bls 12 377 using [this reference](https://extgit.iaik.tugraz.at/krypto/hadeshash/-/blob/master/code/generate_parameters_grain.sage)
 
 ```
-merkle_root(fields_array: [field;8]) -> field
+merkle_root(fields_array: [field; 8]) -> field
 ```
 Computes a merkle root from an fixed 8 element array of fields.
 This implementation uses the poseidon algorithm for hashing.
@@ -76,7 +106,7 @@ The greatest common divisor (GCD) of `integer1` and `integer2` is the largest po
 By convention, `gcd(0, 0)` returns `0`.
 
 ```
-extended_gcd(integer1: i32, integer2: i32) -> (i32,i32,i32)
+extended_gcd(integer1: i32, integer2: i32) -> (i32, i32, i32)
 ```
 Returns the extended greatest common divisor of the two given integers.
 This function uses the extended Euclidean algorithm to return a three-element tuple with the `gcd` and the coefficients `m` and `n` of Bézout's identity such that:
@@ -100,4 +130,22 @@ Parses a text representation of an integer.
 
 ### Functions
 
+```
+capitalize(string: [char; 16]) -> [char; n]
+```
+Converts the first character in the given string to uppercase and the remainder to lowercase.
 
+```
+contains(string: [char; 16], contents: [char; 16]) -> bool
+```
+Checks if string contains any of the given contents.
+
+```
+to_lower(string: [char; 16]) -> [char; 16]
+```
+Converts all the characters in the given string to lowercase.
+
+```
+to_upper(string: [char; 16]) -> [char; 16]
+```
+Converts all the characters in the given string to uppercase.
