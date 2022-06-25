@@ -426,6 +426,12 @@ function test_even_number_is_not_odd() {
     console.assert(!is_odd(2147483646));
 }
 
+@test()
+function test_array_is_reversed() {
+    let array: [i32; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
+    let reversed_array: [i32; 8] = [7, 6, 5, 4, 3, 2, 1, 0];
+    console.assert(reversed_array == reverse(array));
+}
 
 // array contains() tests
 @test()

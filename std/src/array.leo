@@ -1,3 +1,11 @@
+function reverse(array: [i32; 8]) -> [i32; 8] {
+    let reversed_array = [0i32; 8];
+    for i in 0..8 {
+        reversed_array[7-i] = array[i]; 
+    }
+    return reversed_array;
+}
+
 function contains(array: [i32; 8], element: i32) -> bool {
     let contains = false;
     for i in 0..8 {
