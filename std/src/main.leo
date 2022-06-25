@@ -426,6 +426,48 @@ function test_even_number_is_not_odd() {
     console.assert(!is_odd(2147483646));
 }
 
+// array delete() tests
+@test()
+function test_array_delete_deletes_an_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+    let expected_array: [i32; 7] = [1, 2, 3, 5, 6, 7, 8];
+
+    console.assert(expected_array == delete(array, 4));
+}
+
+@test()
+function test_array_delete_deletes_first_element_of_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+    let expected_array: [i32; 7] = [2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(expected_array == delete(array, 1));
+}
+
+@test()
+function test_array_delete_deletes_last_element_of_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+    let expected_array: [i32; 7] = [1, 2, 3, 4, 5, 6, 7];
+
+    console.assert(expected_array == delete(array, 8));
+}
+
+@test()
+function test_array_delete_deletes_only_first_occurrence_when_element_is_repeated() {
+    let array: [i32; 8] = [1, 2, 3, 4, 3, 6, 7, 8];
+    let expected_array: [i32; 7] = [1, 2, 4, 3, 6, 7, 8];
+
+    console.log("{}", delete(array, 3));
+    console.assert(expected_array == delete(array, 3));
+}
+
+@test()
+function test_array_delete_deletes_only_first_occurrence_when_all_elements_are_the_same() {
+    let array: [i32; 8] = [1, 1, 1, 1, 1, 1, 1, 1];
+    let expected_array: [i32; 7] = [1, 1, 1, 1, 1, 1, 1];
+
+    console.assert(expected_array == delete(array, 1));
+}
+
 // array max() tests
 @test()
 function test_maximum_element_is_found_in_array() {
