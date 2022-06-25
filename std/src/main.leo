@@ -434,6 +434,81 @@ function test_count_counts_array_elements() {
     console.assert(count(array) == 8);
 }
 
+// array delete() tests
+@test()
+function test_array_delete_deletes_an_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+    let expected_array: [i32; 7] = [1, 2, 3, 5, 6, 7, 8];
+
+    console.assert(expected_array == delete(array, 4));
+}
+
+@test()
+function test_array_delete_deletes_first_element_of_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+    let expected_array: [i32; 7] = [2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(expected_array == delete(array, 1));
+}
+
+@test()
+function test_array_delete_deletes_last_element_of_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+    let expected_array: [i32; 7] = [1, 2, 3, 4, 5, 6, 7];
+
+    console.assert(expected_array == delete(array, 8));
+}
+
+@test()
+function test_array_delete_deletes_only_first_occurrence_when_element_is_repeated() {
+    let array: [i32; 8] = [1, 2, 3, 4, 3, 6, 7, 8];
+    let expected_array: [i32; 7] = [1, 2, 4, 3, 6, 7, 8];
+
+    console.log("{}", delete(array, 3));
+    console.assert(expected_array == delete(array, 3));
+}
+
+@test()
+function test_array_delete_deletes_only_first_occurrence_when_all_elements_are_the_same() {
+    let array: [i32; 8] = [1, 1, 1, 1, 1, 1, 1, 1];
+    let expected_array: [i32; 7] = [1, 1, 1, 1, 1, 1, 1];
+
+    console.assert(expected_array == delete(array, 1));
+}
+
+// array max() tests
+@test()
+function test_maximum_element_is_found_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 8, 5, 6, 7];
+    let max: i32 = 8;
+
+    console.assert(max == max(array));
+}
+
+@test()
+function test_maximum_element_is_found_in_array_when_maximum_is_the_first_element() {
+    let array: [i32; 8] = [34, 2, 3, 4, 5, 6, 7, 8];
+    let max: i32 = 34;
+
+    console.assert(max == max(array));
+}
+
+@test()
+function test_maximum_element_is_found_in_array_when_maximum_is_the_last_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 97];
+    let max: i32 = 97;
+
+    console.assert(max == max(array));
+}
+
+@test()
+function test_maximum_element_is_found_in_array_when_maximum_is_a_repeated_element() {
+    let array: [i32; 8] = [1, 2, 67, 4, 0, 67, 6, 67];
+    let max: i32 = 67;
+
+    console.assert(max == max(array));
+}
+
 // array min() tests
 @test()
 function test_minimum_element_is_found_in_array() {
