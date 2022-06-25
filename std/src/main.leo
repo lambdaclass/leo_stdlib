@@ -442,3 +442,39 @@ function test_sum_adds_all_elements_in_array_with_positive_and_negative_integers
 
     console.assert(sum == sum(array));
 }
+
+@test()
+function test_array_is_reversed() {
+    let array: [i32; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
+    let reversed_array: [i32; 8] = [7, 6, 5, 4, 3, 2, 1, 0];
+    console.assert(reversed_array == reverse(array));
+}
+
+// array contains() tests
+@test()
+function test_array_contains_an_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 4) == true);
+}
+
+@test()
+function test_array_contains_an_element_when_element_is_first_element_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 8) == true);
+}
+
+@test()
+function test_array_contains_an_element_when_element_is_the_last_element_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 1) == true);
+}
+
+@test()
+function test_array_does_not_contain_an_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 0) == false);
+}
