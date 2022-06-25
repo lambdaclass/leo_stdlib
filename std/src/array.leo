@@ -1,3 +1,11 @@
+function sum(array: [i32; 8]) -> i32 {
+    let sum: i32 = 0;
+    for i in 0..8 {
+        sum += array[i];
+    }
+    return sum;
+}
+
 function reverse(array: [i32; 8]) -> [i32; 8] {
     let reversed_array = [0i32; 8];
     for i in 0..8 {

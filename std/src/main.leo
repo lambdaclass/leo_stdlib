@@ -426,6 +426,23 @@ function test_even_number_is_not_odd() {
     console.assert(!is_odd(2147483646));
 }
 
+// array sum() tests
+@test()
+function test_sum_adds_all_elements_in_array() {
+    let array: [i32; 8] = [2, 4, 6, 8, 10, 12, 14, 16];
+    let sum: i32 = 72;
+
+    console.assert(sum == sum(array));
+}
+
+@test()
+function test_sum_adds_all_elements_in_array_with_positive_and_negative_integers() {
+    let array: [i32; 8] = [2, -4, -6, 8, 10, -12, 14, 16];
+    let sum: i32 = 28;
+
+    console.assert(sum == sum(array));
+}
+
 @test()
 function test_array_is_reversed() {
     let array: [i32; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
