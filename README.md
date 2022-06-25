@@ -38,7 +38,7 @@ Returns the size of the given `array`.
 ```
 delete(array: [i32; 8], element: i32) -> [i32; 7]
 ```
-Deletes the given `element` from the given `array`.
+Deletes the first occurrence of the given `element` from the given `array`. The existence of the `element` in the `array` is a precondition. 
 
 ```
 min(array: [i32; 8]) -> i32
@@ -59,6 +59,11 @@ Returns the sum of all elements in the given `array`.
 reverse(array: [i32; 8]) -> [i32; 8]
 ```
 Reverses the elements in the given `array`.
+
+```
+contains(array: [i32; 8], element: i32) -> bool
+```
+Returns `true` if the given `element` belongs to the given `array`. Returns `false` if it does not.
 
 ## Hashing
 
