@@ -468,4 +468,121 @@ function test_array_delete_deletes_only_first_occurrence_when_all_elements_are_t
     console.assert(expected_array == delete(array, 1));
 }
 
+// array max() tests
+@test()
+function test_maximum_element_is_found_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 8, 5, 6, 7];
+    let max: i32 = 8;
 
+    console.assert(max == max(array));
+}
+
+@test()
+function test_maximum_element_is_found_in_array_when_maximum_is_the_first_element() {
+    let array: [i32; 8] = [34, 2, 3, 4, 5, 6, 7, 8];
+    let max: i32 = 34;
+
+    console.assert(max == max(array));
+}
+
+@test()
+function test_maximum_element_is_found_in_array_when_maximum_is_the_last_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 97];
+    let max: i32 = 97;
+
+    console.assert(max == max(array));
+}
+
+@test()
+function test_maximum_element_is_found_in_array_when_maximum_is_a_repeated_element() {
+    let array: [i32; 8] = [1, 2, 67, 4, 0, 67, 6, 67];
+    let max: i32 = 67;
+
+    console.assert(max == max(array));
+}
+
+// array min() tests
+@test()
+function test_minimum_element_is_found_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 0, 5, 6, 7];
+    let min: i32 = 0;
+
+    console.assert(min == min(array));
+}
+
+@test()
+function test_minimum_element_is_found_in_array_when_minimum_is_the_first_element() {
+    let array: [i32; 8] = [-4, 2, 3, 4, 0, 5, 6, 7];
+    let min: i32 = -4;
+
+    console.assert(min == min(array));
+}
+
+@test()
+function test_minimum_element_is_found_in_array_when_minimum_is_the_last_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 0, 5, 6, -7];
+    let min: i32 = -7;
+
+    console.assert(min == min(array));
+}
+
+@test()
+function test_minimum_element_is_found_in_array_when_minimum_is_a_repeated_element() {
+    let array: [i32; 8] = [1, 2, -7, 4, 0, -7, 6, -7];
+    let min: i32 = -7;
+
+    console.assert(min == min(array));
+}
+
+// array sum() tests
+@test()
+function test_sum_adds_all_elements_in_array() {
+    let array: [i32; 8] = [2, 4, 6, 8, 10, 12, 14, 16];
+    let sum: i32 = 72;
+
+    console.assert(sum == sum(array));
+}
+
+@test()
+function test_sum_adds_all_elements_in_array_with_positive_and_negative_integers() {
+    let array: [i32; 8] = [2, -4, -6, 8, 10, -12, 14, 16];
+    let sum: i32 = 28;
+
+    console.assert(sum == sum(array));
+}
+
+@test()
+function test_array_is_reversed() {
+    let array: [i32; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
+    let reversed_array: [i32; 8] = [7, 6, 5, 4, 3, 2, 1, 0];
+    console.assert(reversed_array == reverse(array));
+}
+
+// array contains() tests
+@test()
+function test_array_contains_an_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 4) == true);
+}
+
+@test()
+function test_array_contains_an_element_when_element_is_first_element_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 8) == true);
+}
+
+@test()
+function test_array_contains_an_element_when_element_is_the_last_element_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 1) == true);
+}
+
+@test()
+function test_array_does_not_contain_an_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 0) == false);
+}
