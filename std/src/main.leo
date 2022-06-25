@@ -426,6 +426,14 @@ function test_even_number_is_not_odd() {
     console.assert(!is_odd(2147483646));
 }
 
+// array count() tests
+@test()
+function test_count_counts_array_elements() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(count(array) == 8);
+}
+
 // array delete() tests
 @test()
 function test_array_delete_deletes_an_element() {

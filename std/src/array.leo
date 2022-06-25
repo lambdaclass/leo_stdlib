@@ -1,3 +1,11 @@
+function count(array: [i32; 8]) -> i32 {
+    let count: i32 = 0;
+    for i in 0..8 {
+        count += 1;
+    }
+    return count;
+}
+
 function delete(array: [i32; 8], element: i32) -> [i32; 7] {
     let deleted_array = [0i32; 7];
     let deleted: bool = false;
