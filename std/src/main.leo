@@ -426,7 +426,6 @@ function test_even_number_is_not_odd() {
     console.assert(!is_odd(2147483646));
 }
 
-// array reverse() tests
 @test()
 function test_array_is_reversed() {
     let array: [i32; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -434,3 +433,31 @@ function test_array_is_reversed() {
     console.assert(reversed_array == reverse(array));
 }
 
+// array contains() tests
+@test()
+function test_array_contains_an_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 4) == true);
+}
+
+@test()
+function test_array_contains_an_element_when_element_is_first_element_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 8) == true);
+}
+
+@test()
+function test_array_contains_an_element_when_element_is_the_last_element_in_array() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 1) == true);
+}
+
+@test()
+function test_array_does_not_contain_an_element() {
+    let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    console.assert(contains(array, 0) == false);
+}

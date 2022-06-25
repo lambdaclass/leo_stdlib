@@ -60,6 +60,11 @@ reverse(array: [i32; 8]) -> [i32; 8]
 ```
 Reverses the elements in the given `array`.
 
+```
+contains(array: [i32; 8], element: i32) -> bool
+```
+Returns `true` if the given `element` belongs to the given `array`. Returns `false` if it does not.
+
 ## Hashing
 
 ### Functions
