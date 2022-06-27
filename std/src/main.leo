@@ -1,6 +1,7 @@
 import hashing.*;
 import integer.*;
 import array.*;
+import str.*;
 
 function main() -> u32  {
     return 0;
@@ -594,3 +595,29 @@ function test_array_does_not_contain_an_element() {
 
     console.assert(contains(array, 0) == false);
 }
+
+// string capitalize() tests
+@test()
+function test_string_capitalize_a_lowercase_string() {
+    let str: [char; 16] = "abcdefghijklmnop";
+    console.assert(capitalize(str) == "Abcdefghijklmnop");
+}
+
+@test()
+function test_string_capitalize_a_string_with_some_uppercase_characters() {
+    let str: [char; 16] = "abcdEfgHijklMnoP";
+    console.assert(capitalize(str) == "Abcdefghijklmnop");
+}
+
+@test()
+function test_string_capitalize_a_string_with_all_uppercase_characters() {
+    let str: [char; 16] = "ABCDEFGHIJKLMNOP";
+    console.assert(capitalize(str) == "Abcdefghijklmnop");
+}
+
+@test()
+function test_string_capitalize_a_string_with_letters_numbers_and_symbols() {
+    let str: [char; 16] = "ab5y!p=Jt&|r6T$b";
+    console.assert(capitalize(str) == "Ab5y!p=jt&|r6t$b");
+}
+

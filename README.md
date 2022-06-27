@@ -136,21 +136,21 @@ Parses a text representation of an integer.
 ### Functions
 
 ```
-capitalize(string: [char; 16]) -> [char; n]
+capitalize(str: [char; 16]) -> [char; 16]
 ```
 Converts the first character in the given string to uppercase and the remainder to lowercase.
 
 ```
-contains(string: [char; 16], contents: [char; 16]) -> bool
+contains(str: [char; 16], contents: [char; 16]) -> bool
 ```
 Checks if string contains any of the given contents.
 
 ```
-to_lower(string: [char; 16]) -> [char; 16]
+to_lower(str: [char; 16]) -> [char; 16]
 ```
 Converts all the characters in the given string to lowercase.
 
 ```
-to_upper(string: [char; 16]) -> [char; 16]
+to_upper(str: [char; 16]) -> [char; 16]
 ```
 Converts all the characters in the given string to uppercase.
