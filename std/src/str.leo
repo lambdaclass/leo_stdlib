@@ -19,47 +19,12 @@ function str_contains(str: [char; 16], contents: [char; 8]) -> bool {
 }
 
 function to_lower(str: [char; 16]) -> [char; 16] {
-    let lowercase_string = ['0'; 16];
-    let applied = false;
-
-    for i in 0..16 {
-        for j in 0..26 {
-            if applied == false && str[i] == uppercase_letters[j] {
-                lowercase_string[i] = lowercase_letters[j];
-                applied = true;
-            }
-        }
-        if applied == false {
-            lowercase_string[i] = str[i];
-        }
-        applied = false;
-    }
-
-    return lowercase_string;
+    return convert(str, false);
 }
 
 function to_upper(str: [char; 16]) -> [char; 16] {
-    let uppercase_string = ['0'; 16];
-    let applied = false;
-
-    for i in 0..16 {
-        for j in 0..26 {
-            if applied == false && str[i] == lowercase_letters[j] {
-                uppercase_string[i] = uppercase_letters[j];
-                applied = true;
-            }
-        }
-        if applied == false {
-            uppercase_string[i] = str[i];
-        }
-        applied = false;
-    }
-
-    return uppercase_string;
+    return convert(str, true);
 }
-
-function convert(str: [char; 16])
-
 
 function capitalize(str: [char; 16]) -> [char; 16] {
     let upper_str = to_upper(str);
@@ -68,4 +33,35 @@ function capitalize(str: [char; 16]) -> [char; 16] {
     capitalized_str[0] = upper_str[0];
     capitalized_str[1..] = lower_str[1..];
     return capitalized_str;
+}
+
+
+// Auxiliary functions
+function convert(str: [char; 16], lower_to_upper: bool) -> [char; 16] {
+    let converted_string = ['0'; 16];
+    let applied = false;
+    
+    let origin = ['0'; 26];
+    let target = ['0'; 26];
+    if lower_to_upper {
+        origin = lowercase_letters;
+        target = uppercase_letters;
+    } else {
+        origin = uppercase_letters;
+        target = lowercase_letters;
+    }
+
+    for i in 0..16 {
+        for j in 0..26 {
+            if applied == false && str[i] == origin[j] {
+                converted_string[i] = target[j];
+                applied = true;
+            }
+        }
+        if applied == false {
+            converted_string[i] = str[i];
+        }
+        applied = false;
+    }
+    return converted_string;
 }
