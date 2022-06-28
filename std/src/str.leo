@@ -21,6 +21,25 @@ function to_lower(str: [char; 16]) -> [char; 16] {
     return lowercase_string;
 }
 
+function to_upper(str: [char; 16]) -> [char; 16] {
+    let uppercase_string = ['0'; 16];
+    let applied = false;
+
+    for i in 0..16 {
+        for j in 0..26 {
+            if applied == false && str[i] == lowercase_letters[j] {
+                uppercase_string[i] = uppercase_letters[j];
+                applied = true;
+            }
+        }
+        if applied == false {
+            uppercase_string[i] = str[i];
+        }
+        applied = false;
+    }
+
+    return uppercase_string;
+}
 
 function capitalize(str: [char; 16]) -> [char; 16] {
     let capitalized_str = ['0'; 16];

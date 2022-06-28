@@ -652,3 +652,28 @@ function test_a_string_with_letters_numbers_and_symbols_is_converted_to_lowercas
     console.assert(to_lower(str) == "ab5y!p=jt&|r6t$b");
 }
 
+// string to_upper() tests
+@test()
+function test_string_with_uppercase_characters_remains_unchanged() {
+    let str: [char; 16] = "ABCDEFGHIJKLMNOP";
+    console.assert(to_upper(str) == "ABCDEFGHIJKLMNOP");
+}
+
+@test()
+function test_string_with_upper_and_lowercase_characters_is_converted_to_uppercase() {
+    let str: [char; 16] = "AbcDefgHijkLMnoP";
+    console.assert(to_upper(str) == "ABCDEFGHIJKLMNOP");
+}
+
+@test()
+function test_string_with_lowercase_characters_is_converted_to_uppercase() {
+    let str: [char; 16] = "abcdefghijklmnop";
+    console.assert(to_upper(str) == "ABCDEFGHIJKLMNOP");
+}
+
+@test()
+function test_a_string_with_letters_numbers_and_symbols_is_converted_to_uppercase() {
+    let str: [char; 16] = "aB5y!P=Jt&|r6T$b";
+    console.assert(to_upper(str) == "AB5Y!P=JT&|R6T$B");
+}
+
