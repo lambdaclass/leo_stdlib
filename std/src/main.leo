@@ -6,7 +6,7 @@ import str.*;
 function main() -> u32  {
     return 0;
 }
-
+/*
 // poseidon() tests 
 @test()  
 function test_poseidon_is_same () {
@@ -595,7 +595,7 @@ function test_array_does_not_contain_an_element() {
 
     console.assert(contains(array, 0) == false);
 }
-
+*/
 // string capitalize() tests
 @test()
 function test_already_capitalized_string_remains_the_same() {
@@ -676,4 +676,41 @@ function test_a_string_with_letters_numbers_and_symbols_is_converted_to_uppercas
     let str: [char; 16] = "aB5y!P=Jt&|r6T$b";
     console.assert(to_upper(str) == "AB5Y!P=JT&|R6T$B");
 }
+
+// string contains() tests
+@test()
+function test_string_contains_its_first_eight_characters() {
+    console.assert(str_contains("abcdefghijklmnop", "abcdefgh"));
+}
+
+@test()
+function test_string_contains_its_last_eight_characters() {
+    console.assert(str_contains("abcdefghijklmnop", "ijklmnop"));
+}
+
+@test()
+function test_string_contains_a_substring() {
+    console.assert(str_contains("abcdefghijklmnop", "defghijk"));
+}
+
+@test()
+function test_string_does_not_contain_another_string() {
+    console.assert(!str_contains("abcdefghijklmnop", "qrstuvwx"));
+}
+
+@test()
+function test_string_does_not_contain_another_string_with_common_characters() {
+    console.assert(!str_contains("abcdefghijklmnop", "mnopqrst"));
+}
+
+@test()
+function test_string_does_not_contain_a_permuted_substring() {
+    console.assert(!str_contains("abcdefghijklmnop", "abcfdegh"));
+}
+
+@test()
+function test_string_contains_is_case_sensitive() {
+    console.assert(!str_contains("abcdefghijklmnop", "ABcDefGh"));
+}
+
 
