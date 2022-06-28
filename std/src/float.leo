@@ -11,7 +11,7 @@ circuit Float {
         // EXP 2 y el otro EXP 10 hay que pasar todo a exp 10 y despues sumar
         if(self.exponent > rhs.exponent){
             let exp_diff = self.exponent - rhs.exponent;
-            let fraction_eq_exp = rhs.fraction * 10**exp_diff;
+            let fraction_eq_exp = rhs.fraction / (10**exp_diff);
             let added_fraction = self.fraction + fraction_eq_exp;
             let (normalized_fraction, shifts_to_normalize) = ten_shifts_to_normalize(added_fraction);
             
@@ -63,7 +63,7 @@ function self_bigger_exponent_test(){
     let adder = Float { sign: true, exponent: 1, fraction: 1};
     // 1.0000000000000004
     let augend = Float { sign: true, exponent: 0, fraction: 4};
-    let expected_result = Float { sign:true, exponent: 1, fraction: 14};
+    let expected_result = Float { sign:true, exponent: 1, fraction: 1};
     console.log("Added value: {}", adder.add(augend));
     console.assert(adder.add(augend).equals(expected_result));
 }
