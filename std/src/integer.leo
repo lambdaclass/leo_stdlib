@@ -7,7 +7,7 @@ function mod(num: i32, divisor: i32) -> i32 {
         divisor = -divisor;
     }
 
-    return num - (num / divisor * divisor);    
+    return num - (num / divisor * divisor);
 }
 
 function is_odd(num: i32) -> bool {

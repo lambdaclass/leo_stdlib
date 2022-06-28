@@ -1,6 +1,7 @@
 import hashing.*;
 import integer.*;
 import array.*;
+import float.*;
 
 function main() -> u32  {
     return 0;
