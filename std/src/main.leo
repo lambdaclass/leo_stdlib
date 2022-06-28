@@ -6,7 +6,7 @@ import str.*;
 function main() -> u32  {
     return 0;
 }
-
+/*
 // poseidon() tests 
 @test()  
 function test_poseidon_is_same () {
@@ -595,8 +595,14 @@ function test_array_does_not_contain_an_element() {
 
     console.assert(contains(array, 0) == false);
 }
-
+*/
 // string capitalize() tests
+@test()
+function test_already_capitalized_string_remains_the_same() {
+    let str: [char; 16] = "Abcdefghijklmnop";
+    console.assert(capitalize(str) == str);
+}
+
 @test()
 function test_string_capitalize_a_lowercase_string() {
     let str: [char; 16] = "abcdefghijklmnop";
@@ -619,5 +625,30 @@ function test_string_capitalize_a_string_with_all_uppercase_characters() {
 function test_string_capitalize_a_string_with_letters_numbers_and_symbols() {
     let str: [char; 16] = "ab5y!p=Jt&|r6T$b";
     console.assert(capitalize(str) == "Ab5y!p=jt&|r6t$b");
+}
+
+// string to_lower() tests
+@test()
+function test_string_with_lowercase_characters_remains_unchanged() {
+    let str: [char; 16] = "abcdefghijklmnop";
+    console.assert(to_lower(str) == "abcdefghijklmnop");
+}
+
+@test()
+function test_string_with_upper_and_lowercase_characters_is_converted_to_lowercase() {
+    let str: [char; 16] = "AbcDefgHijkLMnoP";
+    console.assert(to_lower(str) == "abcdefghijklmnop");
+}
+
+@test()
+function test_string_with_uppercase_characters_is_converted_to_lowercase() {
+    let str: [char; 16] = "ABCDEFGHIJKLMNOP";
+    console.assert(to_lower(str) == "abcdefghijklmnop");
+}
+
+@test()
+function test_a_string_with_letters_numbers_and_symbols_is_converted_to_lowercase() {
+    let str: [char; 16] = "aB5y!P=Jt&|r6T$b";
+    console.assert(to_lower(str) == "ab5y!p=jt&|r6t$b");
 }
 
