@@ -6,7 +6,7 @@ import str.*;
 function main() -> u32  {
     return 0;
 }
-/*
+
 // poseidon() tests 
 @test()  
 function test_poseidon_is_same () {
@@ -595,7 +595,7 @@ function test_array_does_not_contain_an_element() {
 
     console.assert(contains(array, 0) == false);
 }
-*/
+
 // string capitalize() tests
 @test()
 function test_already_capitalized_string_remains_the_same() {
