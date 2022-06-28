@@ -141,7 +141,7 @@ capitalize(str: [char; 16]) -> [char; 16]
 Converts the first character in the given string to uppercase and the remainder to lowercase.
 
 ```
-str_contains(str: [char; 16], contents: [char; 8]) -> bool
+contains(str: [char; 16], contents: [char; 8]) -> bool
 ```
 Checks if string contains any of the given contents.
 

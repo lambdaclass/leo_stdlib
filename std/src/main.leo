@@ -2,11 +2,13 @@ import hashing.*;
 import integer.*;
 import array.*;
 import str.*;
+import array.contains as array_contains;
+import str.contains as str_contains;
 
 function main() -> u32  {
     return 0;
 }
-/*
+
 // poseidon() tests 
 @test()  
 function test_poseidon_is_same () {
@@ -572,30 +574,30 @@ function test_array_is_reversed() {
 function test_array_contains_an_element() {
     let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    console.assert(contains(array, 4) == true);
+    console.assert(array_contains(array, 4) == true);
 }
 
 @test()
 function test_array_contains_an_element_when_element_is_first_element_in_array() {
     let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    console.assert(contains(array, 8) == true);
+    console.assert(array_contains(array, 8) == true);
 }
 
 @test()
 function test_array_contains_an_element_when_element_is_the_last_element_in_array() {
     let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    console.assert(contains(array, 1) == true);
+    console.assert(array_contains(array, 1) == true);
 }
 
 @test()
 function test_array_does_not_contain_an_element() {
     let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    console.assert(contains(array, 0) == false);
+    console.assert(array_contains(array, 0) == false);
 }
-*/
+
 // string capitalize() tests
 @test()
 function test_already_capitalized_string_remains_the_same() {

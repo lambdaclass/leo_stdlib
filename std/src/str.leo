@@ -1,7 +1,7 @@
 const lowercase_letters: [char; 26] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 const uppercase_letters: [char; 26] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-function str_contains(str: [char; 16], contents: [char; 8]) -> bool {
+function contains(str: [char; 16], contents: [char; 8]) -> bool {
     let count: i32 = 0;
     let content_padding = ['0';8];
 
