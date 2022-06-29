@@ -1,70 +1,141 @@
-circuit Float {
-    sign: bool,
-    exponent: u8, 
-    fraction: u8
+const E_MAX: i32 = 127;
 
+circuit Float {
+    exponent: i32, 
+    fraction: i32
+
+    function new(exponent: i32, fraction: i32) -> Self {
+        return normalize(Float { exponent, fraction });
+    }
     function equals(self, rhs: Self) -> bool{
-        return self.sign == rhs.sign && self.exponent == rhs.exponent && self.fraction == rhs.fraction;
+        return self.exponent == rhs.exponent && self.fraction == rhs.fraction;
     }
 
-    function add(self, rhs: Self) -> Self{
+    function add(self, rhs: Self) -> Self {
         // EXP 2 y el otro EXP 10 hay que pasar todo a exp 10 y despues sumar
-        if(self.exponent > rhs.exponent){
-            let exp_diff = self.exponent - rhs.exponent;
-            let fraction_eq_exp = rhs.fraction / (10**exp_diff);
-            let added_fraction = self.fraction + fraction_eq_exp;
-            let (normalized_fraction, shifts_to_normalize) = ten_shifts_to_normalize(added_fraction);
-            
-            console.log("Shifts: {}", shifts_to_normalize);
-            let normalized_exponent = self.exponent + shifts_to_normalize;
-            console.log("Normalized exponent: {}", normalized_exponent);
-
-            return Self { sign: self.sign, exponent: normalized_exponent, fraction: normalized_fraction };
-        }else if(self.exponent == rhs.exponent){
-            return Self { sign: self.sign, exponent: self.exponent, fraction: self.fraction + rhs.fraction };
-        }else{
-            let exp_diff = rhs.exponent - self.exponent;
-            let fraction_eq_exp = self.fraction ** exp_diff;
-            let added_fraction = rhs.fraction + fraction_eq_exp;
-            return Self { sign: self.sign, exponent: self.exponent, fraction: added_fraction };
+        if(self.exponent > rhs.exponent) {
+            let exp_diff: i32 = 0;
+            if(self.exponent > rhs.exponent){
+                exp_diff = self.exponent - rhs.exponent;
+            }
+            let added_fraction = self.fraction + rhs.fraction / (10**exp_diff);
+            //console.log("Added fraction: {}", added_fraction);
+            return normalize(Self{ exponent: self.exponent, fraction: added_fraction });
+        } else if(self.exponent == rhs.exponent) {
+            return normalize(Self{ exponent: self.exponent, fraction: self.fraction + rhs.fraction });
+        } else {
+            let exp_diff: i32 = 0;
+            if(self.exponent < rhs.exponent){
+                exp_diff = rhs.exponent - self.exponent;
+            }
+            let added_fraction = rhs.fraction + self.fraction / (10 ** exp_diff);
+            return normalize(Self{ exponent: rhs.exponent, fraction: added_fraction });
         }
     }
 }
 
-function ten_shifts_to_normalize(num: u8) -> (u8,u8) {
-    let normalized_number: u8 = 0;
-    let count: u8 = 0;
+function normalize(num: Float) -> Float {
+    let normalized_exponent: i32 = num.exponent;
+    let normalized_fraction: i32 = num.fraction;
     let norm = false;
-    for i in 0..8 {
-        if norm == false && (num - num / 10 * 10 == 0) {
-            count += 1;
-            num = num / 10;
+    for i in 0..4 {
+        if norm == false && (normalized_fraction / 1000 == 0) {
+            normalized_exponent -= 1;
+            normalized_fraction = normalized_fraction * 10;
         } else {
             norm = true;
         }
     }
-    return (num,count);
+    return Float { exponent: normalized_exponent, fraction: normalized_fraction };
+}
+
+
+
+@test
+function test_same_exponent_test(){
+    let augend = Float::new(1, 10);
+    let addend = Float::new(1, 4);
+    let sum = Float::new(1, 14);
+    console.assert(augend.add(addend).equals(sum));
 }
 
 @test
-function same_exponent_test(){
-    // 1.0000000000000010 * 10
-    let adder = Float { sign: true, exponent: 1, fraction: 10};
-    // 1.0000000000000004 * 10
-    let augend = Float { sign: true, exponent: 1, fraction: 4};
-    let expected_result = Float { sign:true, exponent: 1, fraction: 14};
-    console.log("Added value: {}", adder.add(augend));
-    console.assert(adder.add(augend).equals(expected_result));
+function test_self_bigger_exponent_test(){
+    let augend = Float::new(1, 1);
+    console.log("Augend: {}", augend);
+    let addend = Float::new(0, 4);
+    let sum = Float::new(0, 14);
+    console.log("{}",augend.add(addend));
+    console.assert(augend.add(addend).equals(sum));
 }
 
 @test
-function self_bigger_exponent_test(){
-    // 1.0000000000000010 * 10 
-    let adder = Float { sign: true, exponent: 1, fraction: 1};
-    // 1.0000000000000004
-    let augend = Float { sign: true, exponent: 0, fraction: 4};
-    let expected_result = Float { sign:true, exponent: 1, fraction: 1};
-    console.log("Added value: {}", adder.add(augend));
-    console.assert(adder.add(augend).equals(expected_result));
+function test_add_bigger_positive_float_to_negative_float_results_positive_float() {
+    let augend = Float::new(2, 1);
+    let addend = Float::new(1, -1);
+
+    let sum = Float::new(1, 9);
+    console.log("Added value: {}", augend.add(addend));
+    console.assert(augend.add(addend).equals(sum));
+}
+
+@test
+function test_add_bigger_negative_float_to_positive_float_results_negative_float() {
+    let augend = Float::new(2, -1);
+    let addend = Float::new(1, 1);
+
+    let sum = Float::new(0, -90);
+    console.log("Added value: {}", augend.add(addend));
+    console.assert(augend.add(addend).equals(sum));
+}
+
+@test
+function test_add_first_smaller_than_second() {
+    let augend = Float::new(0, 2);
+    let addend = Float::new(2, 10);
+
+    let sum = Float::new(0, 1002);
+    console.log("Added value: {}", augend.add(addend));
+    console.assert(augend.add(addend).equals(sum));
+}
+
+@test 
+function test_add_positive_augend_with_negative_exponent_to_positive_addend_with_positive_exponent() {
+    let augend = Float::new(-1, 2);
+    let addend = Float::new(2, 3);
+
+    let sum = Float::new(-1, 3002);
+    console.log("Added value: {}", augend.add(addend));
+    console.assert(augend.add(addend).equals(sum));
+}
+
+@test 
+function test_add_positive_augend_with_positive_exponent_to_positive_addend_with_negative_exponent() {
+    let augend = Float::new(1, 2);
+    let addend = Float::new(-2, 3);
+
+    let sum = Float::new(-2, 2003);
+    console.log("Added value: {}", augend.add(addend));
+    console.assert(augend.add(addend).equals(sum));
+}
+
+@test 
+function test_add_negative_augend_with_negative_exponent_to_negative_addend_with_negative_exponent() {
+    let augend = Float::new(-1, -2);
+    let addend = Float::new(-2, -3);
+
+    let sum = Float::new(-2, -23);
+    console.log("Added value: {}", augend.add(addend));
+    console.assert(augend.add(addend).equals(sum));
+}
+
+@test 
+function test_add_negative_augend_with_negative_exponent_to_negative_addend_with_same_negative_exponent() {
+    let augend = Float::new(-2, -2);
+    let addend = Float::new(-2, -3);
+
+    let sum = Float::new(-2, -5);
+    console.log("Added value: {}", augend.add(addend));
+    console.assert(augend.add(addend).equals(sum));
 }
 
