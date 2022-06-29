@@ -32,6 +32,11 @@ circuit Float {
             return normalize(Self{ exponent: rhs.exponent, fraction: added_fraction });
         }
     }
+
+    function sub(self, rhs: Self) -> Self {
+        let substrahend = Float::new(rhs.exponent, -rhs.fraction);
+        return self.add(substrahend);
+    }
 }
 
 function normalize(num: Float) -> Float {
@@ -56,16 +61,16 @@ function test_same_exponent_test(){
     let augend = Float::new(1, 10);
     let addend = Float::new(1, 4);
     let sum = Float::new(1, 14);
+
     console.assert(augend.add(addend).equals(sum));
 }
 
 @test
 function test_self_bigger_exponent_test(){
     let augend = Float::new(1, 1);
-    console.log("Augend: {}", augend);
     let addend = Float::new(0, 4);
     let sum = Float::new(0, 14);
-    console.log("{}",augend.add(addend));
+
     console.assert(augend.add(addend).equals(sum));
 }
 
@@ -75,7 +80,6 @@ function test_add_bigger_positive_float_to_negative_float_results_positive_float
     let addend = Float::new(1, -1);
 
     let sum = Float::new(1, 9);
-    console.log("Added value: {}", augend.add(addend));
     console.assert(augend.add(addend).equals(sum));
 }
 
@@ -85,7 +89,6 @@ function test_add_bigger_negative_float_to_positive_float_results_negative_float
     let addend = Float::new(1, 1);
 
     let sum = Float::new(0, -90);
-    console.log("Added value: {}", augend.add(addend));
     console.assert(augend.add(addend).equals(sum));
 }
 
@@ -95,7 +98,6 @@ function test_add_first_smaller_than_second() {
     let addend = Float::new(2, 10);
 
     let sum = Float::new(0, 1002);
-    console.log("Added value: {}", augend.add(addend));
     console.assert(augend.add(addend).equals(sum));
 }
 
@@ -105,7 +107,6 @@ function test_add_positive_augend_with_negative_exponent_to_positive_addend_with
     let addend = Float::new(2, 3);
 
     let sum = Float::new(-1, 3002);
-    console.log("Added value: {}", augend.add(addend));
     console.assert(augend.add(addend).equals(sum));
 }
 
@@ -115,7 +116,6 @@ function test_add_positive_augend_with_positive_exponent_to_positive_addend_with
     let addend = Float::new(-2, 3);
 
     let sum = Float::new(-2, 2003);
-    console.log("Added value: {}", augend.add(addend));
     console.assert(augend.add(addend).equals(sum));
 }
 
@@ -125,7 +125,6 @@ function test_add_negative_augend_with_negative_exponent_to_negative_addend_with
     let addend = Float::new(-2, -3);
 
     let sum = Float::new(-2, -23);
-    console.log("Added value: {}", augend.add(addend));
     console.assert(augend.add(addend).equals(sum));
 }
 
@@ -135,7 +134,23 @@ function test_add_negative_augend_with_negative_exponent_to_negative_addend_with
     let addend = Float::new(-2, -3);
 
     let sum = Float::new(-2, -5);
-    console.log("Added value: {}", augend.add(addend));
     console.assert(augend.add(addend).equals(sum));
 }
 
+@test
+function test_substraction_with_substrahend_lower_than_minuend() {
+    let minuend = Float::new(2, 9);
+    let substrahend = Float::new(1, 5);
+
+    let difference = Float::new(1, 85);
+    console.assert(minuend.sub(substrahend).equals(difference));
+}
+
+@test
+function test_substraction_with_minuend_lower_than_substrahend() {
+    let minuend = Float::new(2, 9);
+    let substrahend = Float::new(3, 5);
+
+    let difference = Float::new(2, -41);
+    console.assert(minuend.sub(substrahend).equals(difference));
+}
