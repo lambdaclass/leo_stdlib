@@ -13,19 +13,19 @@ circuit Float {
 
     function add(self, rhs: Self) -> Self {
         // EXP 2 y el otro EXP 10 hay que pasar todo a exp 10 y despues sumar
-        if(self.exponent > rhs.exponent) {
+        if self.exponent > rhs.exponent {
             let exp_diff: i32 = 0;
-            if(self.exponent > rhs.exponent){
+            if self.exponent > rhs.exponent {
                 exp_diff = self.exponent - rhs.exponent;
             }
             let added_fraction = self.fraction + rhs.fraction / (10**exp_diff);
             //console.log("Added fraction: {}", added_fraction);
             return normalize(Self{ exponent: self.exponent, fraction: added_fraction });
-        } else if(self.exponent == rhs.exponent) {
+        } else if self.exponent == rhs.exponent {
             return normalize(Self{ exponent: self.exponent, fraction: self.fraction + rhs.fraction });
         } else {
             let exp_diff: i32 = 0;
-            if(self.exponent < rhs.exponent){
+            if self.exponent < rhs.exponent {
                 exp_diff = rhs.exponent - self.exponent;
             }
             let added_fraction = rhs.fraction + self.fraction / (10 ** exp_diff);
@@ -37,24 +37,32 @@ circuit Float {
         let substrahend = Float::new(rhs.exponent, -rhs.fraction);
         return self.add(substrahend);
     }
+
+    function mul(self, rhs: Self) -> Self {
+    let normalized_exponent: i32 = self.exponent + rhs.exponent;
+    let normalized_fraction: i32 = self.fraction * rhs.fraction;
+
+    for i in 0..6 {
+        if (normalized_fraction > 9999) {
+            normalized_exponent += 1;
+            normalized_fraction = normalized_fraction / 10;
+        }
+    }
+    return Self{ exponent: normalized_exponent, fraction: normalized_fraction };
+    }
 }
 
 function normalize(num: Float) -> Float {
     let normalized_exponent: i32 = num.exponent;
     let normalized_fraction: i32 = num.fraction;
-    let norm = false;
     for i in 0..4 {
-        if norm == false && (normalized_fraction / 1000 == 0) {
+        if (normalized_fraction / 1000 == 0) {
             normalized_exponent -= 1;
             normalized_fraction = normalized_fraction * 10;
-        } else {
-            norm = true;
         }
     }
     return Float { exponent: normalized_exponent, fraction: normalized_fraction };
 }
-
-
 
 @test
 function test_same_exponent_test(){
@@ -153,4 +161,13 @@ function test_substraction_with_minuend_lower_than_substrahend() {
 
     let difference = Float::new(2, -41);
     console.assert(minuend.sub(substrahend).equals(difference));
+}
+
+@test() 
+function test_float_multiplication () {
+    let multiplicand = Float::new(3, 3);
+    let multiplier = Float::new(4, 1);
+
+    let product = Float::new(7, 3);
+    console.assert(multiplicand.mul(multiplier).equals(product));
 }
