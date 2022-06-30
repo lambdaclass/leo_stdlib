@@ -52,23 +52,23 @@ function test_merkle_root_is_different () {
 function test_proofs_validation(){
     let leaf: field = 1;
     let proof: [field;3] = [2, 5639452814959479716333797092602429568041408410490188951967730026708667799362,6811329200201340627416984918056766552180813916433450573759408907577084397184];
-    let path: [bool;3] = [false,false,false];
+    let path: [bool;3] = [false, false, false];
     let root: field = 833453432365499780361700154225551479355839019916612454159711825224580327701;
-    console.assert(verify_proof(leaf, proof,path , root));
+    console.assert(verify_proof(leaf, proof, path , root));
     let bad_proof: [field;3] = [3, 5639452814959479716333797092602429568041408410490188951967730026708667799362,6811329200201340627416984918056766552180813916433450573759408907577084397184];
-    console.assert(!verify_proof(leaf,bad_proof,path, root));
-    let bad_path: [bool;3] = [true,true,true];
-    console.assert(!verify_proof(leaf,proof,bad_path, root));
+    console.assert(!verify_proof(leaf, bad_proof, path, root));
+    let bad_path: [bool;3] = [true, true, true];
+    console.assert(!verify_proof(leaf, proof, bad_path, root));
     let bad_root: field = 32;
-    console.assert(!verify_proof(leaf,proof,path, bad_root));
+    console.assert(!verify_proof(leaf, proof, path, bad_root));
 
     let leaf2: field = 3;
     let proof2: [field;3] = [2, 6741600571531499538076626459614881881572634471432793830237600055083617801110,7040568090966913659889165548176415317933794382062127083870106037652670242975];
-    let path2: [bool;3] = [true,false,true];
+    let path2: [bool;3] = [true, false, true];
     let root2: field = 833453432365499780361700154225551479355839019916612454159711825224580327701;
-    console.assert(verify_proof(leaf2, proof2,path2 , root2));
+    console.assert(verify_proof(leaf2, proof2, path2, root2));
     let bad_proof2: [field;3] = [3, 5639452814959479716333797092602429568041408410490188951967730026708667799362,6811329200201340627416984918056766552180813916433450573759408907577084397184];
-    console.assert(!verify_proof(leaf2,bad_proof2,path2, root2));
+    console.assert(!verify_proof(leaf2, bad_proof2, path2, root2));
 }
 
 

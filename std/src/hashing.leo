@@ -293,7 +293,7 @@ function verify_proof(leaf:field, proof: [field;3], path_index: [bool;3], root: 
     let element = leaf;
     for i in 0..levels{
         if path_index[i] {
-            element = poseidon(proof[i],element);
+            element = poseidon(proof[i], element);
         } else {
             element = poseidon(element, proof[i]);
         }
