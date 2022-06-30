@@ -39,16 +39,16 @@ circuit Float {
     }
 
     function mul(self, rhs: Self) -> Self {
-    let normalized_exponent: i32 = self.exponent + rhs.exponent;
-    let normalized_fraction: i32 = self.fraction * rhs.fraction;
+        let normalized_exponent: i32 = self.exponent + rhs.exponent;
+        let normalized_fraction: i32 = self.fraction * rhs.fraction;
 
-    for i in 0..6 {
-        if (normalized_fraction > 9999) {
-            normalized_exponent += 1;
-            normalized_fraction = normalized_fraction / 10;
+        for i in 0..6 {
+            if (normalized_fraction > 9999) {
+                normalized_exponent += 1;
+                normalized_fraction = normalized_fraction / 10;
+            }
         }
-    }
-    return Self{ exponent: normalized_exponent, fraction: normalized_fraction };
+        return Self{ exponent: normalized_exponent, fraction: normalized_fraction };
     }
 }
 
@@ -65,7 +65,7 @@ function normalize(num: Float) -> Float {
 }
 
 @test
-function test_same_exponent_test(){
+function test_addition_of_floats_with_same_exponent(){
     let augend = Float::new(1, 10);
     let addend = Float::new(1, 4);
     let sum = Float::new(1, 14);
@@ -74,7 +74,7 @@ function test_same_exponent_test(){
 }
 
 @test
-function test_self_bigger_exponent_test(){
+function test_add_bigger_positive_float_to_positive_float_results_positive_float(){
     let augend = Float::new(1, 1);
     let addend = Float::new(0, 4);
     let sum = Float::new(0, 14);
@@ -101,7 +101,7 @@ function test_add_bigger_negative_float_to_positive_float_results_negative_float
 }
 
 @test
-function test_add_first_smaller_than_second() {
+function test_add_smaller_positive_float_to_positive_float_results_positive_float() {
     let augend = Float::new(0, 2);
     let addend = Float::new(2, 10);
 
