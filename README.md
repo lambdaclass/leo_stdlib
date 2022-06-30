@@ -91,7 +91,7 @@ merkle_verify_proof(leave:field, proof: [field;8], path_index: [bool;n], root: f
 Verifies a given merkle proof of inclusion using poseidon hash as implemented on the stdlib
 returns true if it's correct, and false if it's not
 
-it receives the leave, the proof and the root as arguments. Additionally, it receives a path_index array indicating for each element of the proof false if it's hashed as the first element and true if it's hashed as the second element
+it receives the leave, the proof and the root as arguments. Additionally, it receives a path_index array indicating for each element of the proof false if it's hashed as the first element and true if it's hashed as the second element.
 
 ## Integer
 
