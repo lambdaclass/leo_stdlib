@@ -286,3 +286,17 @@ function merkle_root(array: [field;8]) -> field {
     }
     return array_of_leaves[0];
 }
+
+function verify_proof(leaf:field, proof: [field;3], path_index: [bool;3], root: field) -> bool{
+    const levels: u32 = 3;
+    
+    let element = leaf;
+    for i in 0..levels{
+        if path_index[i] {
+            element = poseidon(proof[i], element);
+        } else {
+            element = poseidon(element, proof[i]);
+        }
+    }
+    return element == root;
+}

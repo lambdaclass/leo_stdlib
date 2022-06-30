@@ -85,6 +85,14 @@ merkle_root(fields_array: [field; 8]) -> field
 Computes a merkle root from a fixed 8 element array of fields.
 This implementation uses the Poseidon algorithm for hashing.
 
+```
+merkle_verify_proof(leaf:field, proof: [field;8], path_index: [bool;n], root: field) -> bool
+```
+Verifies a given merkle proof of inclusion using poseidon hash as implemented on the stdlib
+returns true if it's correct, and false if it's not
+
+it receives the leaf, the proof and the root as arguments. Additionally, it receives a path_index array indicating for each element of the proof false if it's hashed as the first element and true if it's hashed as the second element.
+
 ## Integer
 
 ### Functions
