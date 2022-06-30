@@ -186,6 +186,5 @@ function test_float_multiplication_neg_pos_exp () {
     let multiplicand = Float::new(-3, -2);
     let multiplier = Float::new(-2, 3);
     let product = Float::new(-5, -6);
-    console.log("Expected result: {}", product);
     console.assert(multiplicand.mul(multiplier).equals(product));
 }
