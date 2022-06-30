@@ -27,11 +27,18 @@ function to_upper(str: [char; 16]) -> [char; 16] {
 }
 
 function capitalize(str: [char; 16]) -> [char; 16] {
-    let upper_str = to_upper(str);
-    let lower_str = to_lower(str);
     let capitalized_str = ['0'; 16];
-    capitalized_str[0] = upper_str[0];
-    capitalized_str[1..] = lower_str[1..];
+
+    // Capitalize first char
+    for i in 0..26 {
+        if str[0] == lowercase_letters[i] {
+            str[0] = uppercase_letters[i];
+        }
+    }
+    capitalized_str[0] = str[0];
+
+    // Capitalize the rest of the string
+    capitalized_str[1..] = substring_to_lower(str[1..]);
     return capitalized_str;
 }
 
@@ -64,4 +71,23 @@ function convert(str: [char; 16], lower_to_upper: bool) -> [char; 16] {
         applied = false;
     }
     return converted_string;
+}
+
+function substring_to_lower(substr: [char; 15]) -> [char; 15] {
+    let converted_substring = ['0'; 15];
+    let applied = false;
+
+    for i in 0..15 {
+        for j in 0..26 {
+            if applied == false && substr[i] == uppercase_letters[j] {
+                converted_substring[i] = lowercase_letters[j];
+                applied = true;
+            }
+        }
+        if applied == false {
+            converted_substring[i] = substr[i];
+        }
+        applied = false;
+    }
+    return converted_substring;
 }
