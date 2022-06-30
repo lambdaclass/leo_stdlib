@@ -1,6 +1,9 @@
 import hashing.*;
 import integer.*;
 import array.*;
+import str.*;
+import array.contains as array_contains;
+import str.contains as str_contains;
 
 function main() -> u32  {
     return 0;
@@ -597,26 +600,145 @@ function test_array_is_reversed() {
 function test_array_contains_an_element() {
     let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    console.assert(contains(array, 4) == true);
+    console.assert(array_contains(array, 4) == true);
 }
 
 @test()
 function test_array_contains_an_element_when_element_is_first_element_in_array() {
     let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    console.assert(contains(array, 8) == true);
+    console.assert(array_contains(array, 8) == true);
 }
 
 @test()
 function test_array_contains_an_element_when_element_is_the_last_element_in_array() {
     let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    console.assert(contains(array, 1) == true);
+    console.assert(array_contains(array, 1) == true);
 }
 
 @test()
 function test_array_does_not_contain_an_element() {
     let array: [i32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    console.assert(contains(array, 0) == false);
+    console.assert(array_contains(array, 0) == false);
 }
+
+// string capitalize() tests
+@test()
+function test_already_capitalized_string_remains_the_same() {
+    let str: [char; 16] = "Abcdefghijklmnop";
+    console.assert(capitalize(str) == str);
+}
+
+@test()
+function test_string_capitalize_a_lowercase_string() {
+    let str: [char; 16] = "abcdefghijklmnop";
+    console.assert(capitalize(str) == "Abcdefghijklmnop");
+}
+
+@test()
+function test_string_capitalize_a_string_with_some_uppercase_characters() {
+    let str: [char; 16] = "abcdEfgHijklMnoP";
+    console.assert(capitalize(str) == "Abcdefghijklmnop");
+}
+
+@test()
+function test_string_capitalize_a_string_with_all_uppercase_characters() {
+    let str: [char; 16] = "ABCDEFGHIJKLMNOP";
+    console.assert(capitalize(str) == "Abcdefghijklmnop");
+}
+
+@test()
+function test_string_capitalize_a_string_with_letters_numbers_and_symbols() {
+    let str: [char; 16] = "ab5y!p=Jt&|r6T$b";
+    console.assert(capitalize(str) == "Ab5y!p=jt&|r6t$b");
+}
+
+// string to_lower() tests
+@test()
+function test_string_with_lowercase_characters_remains_unchanged() {
+    let str: [char; 16] = "abcdefghijklmnop";
+    console.assert(to_lower(str) == "abcdefghijklmnop");
+}
+
+@test()
+function test_string_with_upper_and_lowercase_characters_is_converted_to_lowercase() {
+    let str: [char; 16] = "AbcDefgHijkLMnoP";
+    console.assert(to_lower(str) == "abcdefghijklmnop");
+}
+
+@test()
+function test_string_with_uppercase_characters_is_converted_to_lowercase() {
+    let str: [char; 16] = "ABCDEFGHIJKLMNOP";
+    console.assert(to_lower(str) == "abcdefghijklmnop");
+}
+
+@test()
+function test_a_string_with_letters_numbers_and_symbols_is_converted_to_lowercase() {
+    let str: [char; 16] = "aB5y!P=Jt&|r6T$b";
+    console.assert(to_lower(str) == "ab5y!p=jt&|r6t$b");
+}
+
+// string to_upper() tests
+@test()
+function test_string_with_uppercase_characters_remains_unchanged() {
+    let str: [char; 16] = "ABCDEFGHIJKLMNOP";
+    console.assert(to_upper(str) == "ABCDEFGHIJKLMNOP");
+}
+
+@test()
+function test_string_with_upper_and_lowercase_characters_is_converted_to_uppercase() {
+    let str: [char; 16] = "AbcDefgHijkLMnoP";
+    console.assert(to_upper(str) == "ABCDEFGHIJKLMNOP");
+}
+
+@test()
+function test_string_with_lowercase_characters_is_converted_to_uppercase() {
+    let str: [char; 16] = "abcdefghijklmnop";
+    console.assert(to_upper(str) == "ABCDEFGHIJKLMNOP");
+}
+
+@test()
+function test_a_string_with_letters_numbers_and_symbols_is_converted_to_uppercase() {
+    let str: [char; 16] = "aB5y!P=Jt&|r6T$b";
+    console.assert(to_upper(str) == "AB5Y!P=JT&|R6T$B");
+}
+
+// string contains() tests
+@test()
+function test_string_contains_its_first_eight_characters() {
+    console.assert(str_contains("abcdefghijklmnop", "abcdefgh"));
+}
+
+@test()
+function test_string_contains_its_last_eight_characters() {
+    console.assert(str_contains("abcdefghijklmnop", "ijklmnop"));
+}
+
+@test()
+function test_string_contains_a_substring() {
+    console.assert(str_contains("abcdefghijklmnop", "defghijk"));
+}
+
+@test()
+function test_string_does_not_contain_another_string() {
+    console.assert(!str_contains("abcdefghijklmnop", "qrstuvwx"));
+}
+
+@test()
+function test_string_does_not_contain_another_string_with_common_characters() {
+    console.assert(!str_contains("abcdefghijklmnop", "mnopqrst"));
+}
+
+@test()
+function test_string_does_not_contain_a_permuted_substring() {
+    console.assert(!str_contains("abcdefghijklmnop", "abcfdegh"));
+}
+
+@test()
+function test_string_contains_is_case_sensitive() {
+    console.assert(!str_contains("abcdefghijklmnop", "ABcDefGh"));
+}
+
+
