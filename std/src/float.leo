@@ -43,7 +43,7 @@ circuit Float {
         let normalized_fraction: i32 = self.fraction * rhs.fraction;
 
         for i in 0..6 {
-            if (normalized_fraction > 9999) {
+            if (normalized_fraction > 9999 || normalized_fraction < -9999) {
                 normalized_exponent += 1;
                 normalized_fraction = normalized_fraction / 10;
             }
@@ -169,5 +169,23 @@ function test_float_multiplication () {
     let multiplier = Float::new(4, 1);
 
     let product = Float::new(7, 3);
+    console.assert(multiplicand.mul(multiplier).equals(product));
+}
+
+
+@test() 
+function test_float_multiplication_neg_exp () {
+    let multiplicand = Float::new(-3, 2);
+    let multiplier = Float::new(-2, 3);
+    let product = Float::new(-5, 6);
+    console.assert(multiplicand.mul(multiplier).equals(product));
+}
+
+@test() 
+function test_float_multiplication_neg_pos_exp () {
+    let multiplicand = Float::new(-3, -2);
+    let multiplier = Float::new(-2, 3);
+    let product = Float::new(-5, -6);
+    console.log("Expected result: {}", product);
     console.assert(multiplicand.mul(multiplier).equals(product));
 }
