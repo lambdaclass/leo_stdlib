@@ -24,7 +24,7 @@ To run the tests:
 
 # Documentation
 
-This is a preliminary documentacion. [MkDocs](https://www.mkdocs.org/) will be use for proper documentation.
+This is a preliminary documentacion. [MkDocs](https://www.mkdocs.org/) will be used for proper documentation.
 
 ## Array
 
@@ -71,7 +71,7 @@ Returns `true` if the given `element` belongs to the given `array`. Returns `fal
 ```
 poseidon(field1: field, field2: field) -> field
 ```
-Poseidon hashing fucction for fields.
+Poseidon hashing function for fields.
 Takes 2 fields as inputs and generates one output, to use in binary merkle trees.
 
 These implementation is based on the Poseidon RS implementation, which itself is based in the 
@@ -82,8 +82,8 @@ The Constants are generated for bls 12 377 using [this reference](https://extgit
 ```
 merkle_root(fields_array: [field; 8]) -> field
 ```
-Computes a merkle root from an fixed 8 element array of fields.
-This implementation uses the poseidon algorithm for hashing.
+Computes a merkle root from a fixed 8 element array of fields.
+This implementation uses the Poseidon algorithm for hashing.
 
 ## Integer
 
@@ -143,7 +143,7 @@ Converts the first character in the given string to uppercase and the remainder 
 ```
 contains(string: [char; 16], contents: [char; 16]) -> bool
 ```
-Checks if string contains any of the given contents.
+Checks if a string contains any of the given contents.
 
 ```
 to_lower(string: [char; 16]) -> [char; 16]
