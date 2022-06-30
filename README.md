@@ -154,3 +154,5 @@ Converts all the characters in the given string to lowercase.
 to_upper(string: [char; 16]) -> [char; 16]
 ```
 Converts all the characters in the given string to uppercase.
+
+## Float
