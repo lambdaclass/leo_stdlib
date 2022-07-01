@@ -4,7 +4,7 @@ import array.*;
 import str.*;
 import array.contains as array_contains;
 import str.contains as str_contains;
-
+import if_return_error_ex.*;
 function main() -> u32  {
     return 0;
 }
@@ -742,3 +742,39 @@ function test_string_contains_is_case_sensitive() {
 }
 
 
+// All the code in the tests do the same
+// yet when using nesting functions without different variables
+// it gives a different result
+
+@test 
+function operation_with_equals_and_nested_function_test() {
+    let rhs = CustomType{ value: 1};
+    let lhs = CustomType{ value: 0};
+    let expected_result = CustomType{ value: 1};
+    console.assert(expected_result.equals(lhs.operate(rhs)));
+}
+
+@test 
+function operation_with_intermediate_variable_and_equals_test() {
+    let rhs = CustomType{ value: 1};
+    let lhs = CustomType{ value: 0};
+    let expected_result = CustomType{ value: 1};
+    let result = lhs.operate(rhs);
+    console.assert(expected_result.equals(result));
+}
+
+@test 
+function operation_test() {
+    let rhs = CustomType{ value: 1};
+    let lhs = CustomType{ value: 0};
+    let expected_result = CustomType{ value: 1};
+    console.assert(lhs.operate(rhs).value == 1);
+}
+
+@test 
+function operation_with_static_equals_test() {
+    let rhs = CustomType{ value: 1};
+    let lhs = CustomType{ value: 0};
+    let expected_result = CustomType{ value: 1};
+    console.assert(CustomType::static_equals(expected_result,lhs.operate(rhs)));
+}
