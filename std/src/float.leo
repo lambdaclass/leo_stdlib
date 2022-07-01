@@ -1,11 +1,19 @@
-const E_MAX: i32 = 127;
+const MAX_I32:i32 = 2147483647;
+//additions of exponents must not overflow
+
+const SPECIAL_VALUE_EXP = MAX_I32/2;
+const MAX_EXP = MAX_I32/2 - 1;
+const NAN: Float = Float { exponent: SPECIAL_VALUE_EXP, fraction: 1};
+const POS_INF: Float = Float { exponent: SPECIAL_VALUE_EXP, fraction: 0};
+const NEG_INF: Float = Float { exponent: SPECIAL_VALUE_EXP, fraction: 0};
+
 
 circuit Float {
     exponent: i32, 
     fraction: i32
 
     function new(exponent: i32, fraction: i32) -> Self {
-        return normalize(Float { exponent, fraction });
+        return normalize_for_sum(Float { exponent, fraction });
     }
 
     function equals(self, rhs: Self) -> bool {
@@ -19,16 +27,16 @@ circuit Float {
                 exp_diff = self.exponent - rhs.exponent;
             }
             let added_fraction = self.fraction + rhs.fraction / (10**exp_diff);
-            return normalize(Self{ exponent: self.exponent, fraction: added_fraction });
+            return infinity_if_overflow(normalize_for_sum(Self{ exponent: self.exponent, fraction: added_fraction }));
         } else if self.exponent == rhs.exponent {
-            return normalize(Self{ exponent: self.exponent, fraction: self.fraction + rhs.fraction });
+            return infinity_if_overflow(normalize_for_sum(Self{ exponent: self.exponent, fraction: self.fraction + rhs.fraction }));
         } else {
             let exp_diff: i32 = 0;
             if self.exponent < rhs.exponent {
                 exp_diff = rhs.exponent - self.exponent;
             }
             let added_fraction = rhs.fraction + self.fraction / (10 ** exp_diff);
-            return normalize(Self{ exponent: rhs.exponent, fraction: added_fraction });
+            return infinity_if_overflow(normalize_for_sum(Self{ exponent: rhs.exponent, fraction: added_fraction }));
         }
     }
 
@@ -47,26 +55,45 @@ circuit Float {
                 normalized_fraction = normalized_fraction / 10;
             }
         }
-        return Self{ exponent: normalized_exponent, fraction: normalized_fraction };
+        return infinity_if_overflow(Self{ exponent: normalized_exponent, fraction: normalized_fraction });
     }
 
     function div(self, rhs: Self) -> Self {
         if(self.fraction == rhs.fraction || self.fraction == -rhs.fraction){
             let normalized_exponent: i32 = self.exponent - rhs.exponent - 3;
             if self.fraction == -rhs.fraction {
-                return Self{ exponent: normalized_exponent, fraction: -1000 };
+                return infinity_if_overflow(Self{ exponent: normalized_exponent, fraction: -1000 });
             } else {
-                return Self{ exponent: normalized_exponent, fraction: 1000 };
+                return infinity_if_overflow(Self{ exponent: normalized_exponent, fraction: 1000 });
             }
         } else{
             let normalized_exponent: i32 = self.exponent - rhs.exponent - 4;
             let normalized_fraction: i32 = ((10000 * self.fraction) / rhs.fraction);
-            return normalize(Self{ exponent: normalized_exponent, fraction: normalized_fraction });
+            return infinity_if_overflow(normalize_for_sum(Self{ exponent: normalized_exponent, fraction: normalized_fraction }));
         }
     }
 }
 
-function normalize(num: Float) -> Float {
+function normalize_for_sum(num: Float) -> Float {
+    let normalized_exponent: i32 = num.exponent;
+    let normalized_fraction: i32 = num.fraction;
+
+    if(num.fraction > 9999){
+        normalized_fraction = normalized_fraction / 10;
+        normalized_exponent += 1;
+        return Float { exponent: normalized_exponent, fraction: normalized_fraction };
+    }else{
+        for i in 0..4 {
+            if (normalized_fraction / 1000 == 0) {
+                normalized_exponent -= 1;
+                normalized_fraction = normalized_fraction * 10;
+            }
+        }
+        return Float { exponent: normalized_exponent, fraction: normalized_fraction };
+    }
+}
+
+function normalize_for_mul(num: Float) -> Float {
     let normalized_exponent: i32 = num.exponent;
     let normalized_fraction: i32 = num.fraction;
     for i in 0..4 {
@@ -76,6 +103,17 @@ function normalize(num: Float) -> Float {
         }
     }
     return Float { exponent: normalized_exponent, fraction: normalized_fraction };
+}
+
+
+function infinity_if_overflow(number: Float) -> Float {
+    if(number.exponent > MAX_EXP){
+        return POS_INF;
+    }else if number.exponent < -MAX_EXP{
+        return NEG_INF;
+    } else {
+        return number;
+    }
 }
 
 @test
@@ -285,4 +323,50 @@ function test_division_with_order_of_magnitude_difference_dividend_smaller_than_
     console.log("Expected result: {}", quotient);
     console.log("Result: {}", result);
     console.assert(quotient.equals(result));
+}
+
+@test()
+function test_mul_overflow_is_infinite() {
+    let augend = Float::new(MAX_EXP / 2 + 2, 1);
+    let addend = Float::new(MAX_EXP / 2 + 2, 1);
+    let result = augend.mul(addend); 
+    console.log("Expected result: {}", POS_INF);
+    console.log("Result: {}", result);
+    console.assert(result.equals(POS_INF));
+}
+
+@test()
+function test_add_big_fractions() {
+    let augend = Float::new(-4, 5000);
+    let addend = Float::new(-4, 5000);
+    let result = augend.add(addend); 
+    console.assert(result.equals(Float::new(0,1)));
+}
+
+@test()
+function test_add_overflow_is_infinite() {
+    let augend = Float::new(MAX_EXP, 9999);
+    let addend = Float::new(MAX_EXP, 1);
+    let result = augend.add(addend); 
+    console.log("Expected result: {}", POS_INF);
+    console.log("Result: {}", result);
+    console.assert(result.equals(POS_INF));
+}
+
+@test()
+function test_add_overflow_lower_limit_is_not_infinite() {
+    let augend = Float::new(MAX_EXP, 9998);
+    let addend = Float::new(MAX_EXP, 1);
+    let result = augend.add(addend); 
+    console.log("Expected result: {}", POS_INF);
+    console.log("Result: {}", result);
+    console.assert(!result.equals(POS_INF));
+}
+
+@test()
+function test_add_underflow_is_neg_inf() {
+    let augend = Float::new(-MAX_EXP, -1);
+    let addend = Float::new(-MAX_EXP, -9999);
+    let result = augend.add(addend); 
+    console.assert(!result.equals(NEG_INF));
 }
