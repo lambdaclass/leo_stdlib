@@ -3,10 +3,9 @@ const MAX_I32:i32 = 2147483647;
 
 const SPECIAL_VALUE_EXP = MAX_I32/2;
 const MAX_EXP = MAX_I32/2 - 1;
-const NAN: Float = Float { exponent: SPECIAL_VALUE_EXP, fraction: 1};
-const POS_INF: Float = Float { exponent: SPECIAL_VALUE_EXP, fraction: 0};
-const NEG_INF: Float = Float { exponent: SPECIAL_VALUE_EXP, fraction: 0};
-
+const NAN: Float = Float { exponent: SPECIAL_VALUE_EXP, fraction: 0};
+const POS_INF: Float = Float { exponent: SPECIAL_VALUE_EXP, fraction: 1};
+const NEG_INF: Float = Float { exponent: SPECIAL_VALUE_EXP, fraction: -1};
 
 circuit Float {
     exponent: i32, 
@@ -46,6 +45,9 @@ circuit Float {
     }
 
     function mul(self, rhs: Self) -> Self {
+        if (is_NaN_for_mul(self, rhs)) {
+            return NAN;
+        } else {
         let normalized_exponent: i32 = self.exponent + rhs.exponent;
         let normalized_fraction: i32 = self.fraction * rhs.fraction;
 
@@ -56,20 +58,25 @@ circuit Float {
             }
         }
         return infinity_if_overflow(Self{ exponent: normalized_exponent, fraction: normalized_fraction });
+        }
     }
 
     function div(self, rhs: Self) -> Self {
-        if(self.fraction == rhs.fraction || self.fraction == -rhs.fraction){
-            let normalized_exponent: i32 = self.exponent - rhs.exponent - 3;
-            if self.fraction == -rhs.fraction {
-                return infinity_if_overflow(Self{ exponent: normalized_exponent, fraction: -1000 });
-            } else {
-                return infinity_if_overflow(Self{ exponent: normalized_exponent, fraction: 1000 });
-            }
-        } else{
-            let normalized_exponent: i32 = self.exponent - rhs.exponent - 4;
-            let normalized_fraction: i32 = ((10000 * self.fraction) / rhs.fraction);
-            return infinity_if_overflow(normalize_for_sum(Self{ exponent: normalized_exponent, fraction: normalized_fraction }));
+        if (is_NaN_for_div(self, rhs)) {
+            return NAN;
+        } else {
+            if(self.fraction == rhs.fraction || self.fraction == -rhs.fraction){
+                let normalized_exponent: i32 = self.exponent - rhs.exponent - 3;
+                if self.fraction == -rhs.fraction {
+                    return infinity_if_overflow(Self{ exponent: normalized_exponent, fraction: -1000 });
+                } else {
+                    return infinity_if_overflow(Self{ exponent: normalized_exponent, fraction: 1000 });
+                }
+            } else{
+                let normalized_exponent: i32 = self.exponent - rhs.exponent - 4;
+                let normalized_fraction: i32 = ((10000 * self.fraction) / rhs.fraction);
+                return infinity_if_overflow(normalize_for_sum(Self{ exponent: normalized_exponent, fraction: normalized_fraction }));
+            }    
         }
     }
 }
@@ -78,11 +85,13 @@ function normalize_for_sum(num: Float) -> Float {
     let normalized_exponent: i32 = num.exponent;
     let normalized_fraction: i32 = num.fraction;
 
-    if(num.fraction > 9999){
+    if (num.fraction == 0) {
+        return num;
+    } else if(num.fraction > 9999){
         normalized_fraction = normalized_fraction / 10;
         normalized_exponent += 1;
         return Float { exponent: normalized_exponent, fraction: normalized_fraction };
-    }else{
+    } else{
         for i in 0..4 {
             if (normalized_fraction / 1000 == 0) {
                 normalized_exponent -= 1;
@@ -105,18 +114,35 @@ function normalize_for_mul(num: Float) -> Float {
     return Float { exponent: normalized_exponent, fraction: normalized_fraction };
 }
 
-
 function infinity_if_overflow(number: Float) -> Float {
     if(number.exponent > MAX_EXP){
-        return POS_INF;
-    }else if number.exponent < -MAX_EXP{
-        return NEG_INF;
+        if number.fraction >= 0 {
+            return POS_INF;
+        } else {
+            return NEG_INF;
+        }
+    } else if(number.exponent < -MAX_EXP){
+        return Float::new(0, 0);
     } else {
         return number;
     }
 }
 
-@test
+function is_NaN_for_mul(multiplicand: Float, multiplier: Float) -> bool {
+    return (multiplicand.fraction == 0 && multiplier.equals(POS_INF)) 
+        || (multiplicand.fraction == 0 && multiplier.equals(NEG_INF)) 
+        || (multiplicand.equals(POS_INF) && multiplicand.fraction == 0)
+        || (multiplicand.equals(NEG_INF) && multiplicand.fraction == 0); 
+}
+
+function is_NaN_for_div(dividend: Float, divisor: Float) -> bool {
+    return (dividend.equals(POS_INF) && dividend.equals(POS_INF))
+        || (dividend.equals(POS_INF) && dividend.equals(NEG_INF))
+        || (dividend.equals(NEG_INF) && dividend.equals(POS_INF))
+        || (dividend.equals(NEG_INF) && dividend.equals(NEG_INF));
+}
+
+@test()
 function test_addition_of_floats_with_same_exponent(){
     let augend = Float::new(1, 10);
     let addend = Float::new(1, 4);
@@ -125,7 +151,7 @@ function test_addition_of_floats_with_same_exponent(){
     console.assert(augend.add(addend).equals(sum));
 }
 
-@test
+@test()
 function test_add_bigger_positive_float_to_positive_float_results_positive_float(){
     let augend = Float::new(1, 1);
     let addend = Float::new(0, 4);
@@ -134,7 +160,7 @@ function test_add_bigger_positive_float_to_positive_float_results_positive_float
     console.assert(augend.add(addend).equals(sum));
 }
 
-@test
+@test()
 function test_add_bigger_positive_float_to_negative_float_results_positive_float() {
     let augend = Float::new(2, 1);
     let addend = Float::new(1, -1);
@@ -143,7 +169,7 @@ function test_add_bigger_positive_float_to_negative_float_results_positive_float
     console.assert(augend.add(addend).equals(sum));
 }
 
-@test
+@test()
 function test_add_bigger_negative_float_to_positive_float_results_negative_float() {
     let augend = Float::new(2, -1);
     let addend = Float::new(1, 1);
@@ -152,7 +178,7 @@ function test_add_bigger_negative_float_to_positive_float_results_negative_float
     console.assert(augend.add(addend).equals(sum));
 }
 
-@test
+@test()
 function test_add_smaller_positive_float_to_positive_float_results_positive_float() {
     let augend = Float::new(0, 2);
     let addend = Float::new(2, 10);
@@ -161,7 +187,7 @@ function test_add_smaller_positive_float_to_positive_float_results_positive_floa
     console.assert(augend.add(addend).equals(sum));
 }
 
-@test 
+@test() 
 function test_add_positive_augend_with_negative_exponent_to_positive_addend_with_positive_exponent() {
     let augend = Float::new(-1, 2);
     let addend = Float::new(2, 3);
@@ -170,7 +196,7 @@ function test_add_positive_augend_with_negative_exponent_to_positive_addend_with
     console.assert(augend.add(addend).equals(sum));
 }
 
-@test 
+@test() 
 function test_add_positive_augend_with_positive_exponent_to_positive_addend_with_negative_exponent() {
     let augend = Float::new(1, 2);
     let addend = Float::new(-2, 3);
@@ -179,7 +205,7 @@ function test_add_positive_augend_with_positive_exponent_to_positive_addend_with
     console.assert(augend.add(addend).equals(sum));
 }
 
-@test 
+@test()
 function test_add_negative_augend_with_negative_exponent_to_negative_addend_with_negative_exponent() {
     let augend = Float::new(-1, -2);
     let addend = Float::new(-2, -3);
@@ -188,7 +214,7 @@ function test_add_negative_augend_with_negative_exponent_to_negative_addend_with
     console.assert(augend.add(addend).equals(sum));
 }
 
-@test 
+@test()
 function test_add_negative_augend_with_negative_exponent_to_negative_addend_with_same_negative_exponent() {
     let augend = Float::new(-2, -2);
     let addend = Float::new(-2, -3);
@@ -197,7 +223,39 @@ function test_add_negative_augend_with_negative_exponent_to_negative_addend_with
     console.assert(augend.add(addend).equals(sum));
 }
 
-@test
+@test()
+function test_add_big_fractions() {
+    let augend = Float::new(-4, 5000);
+    let addend = Float::new(-4, 5000);
+    let result = augend.add(addend); 
+    console.assert(result.equals(Float::new(0,1)));
+}
+
+@test()
+function test_add_overflow_is_infinite() {
+    let augend = Float::new(MAX_EXP, 9999);
+    let addend = Float::new(MAX_EXP, 1);
+    let result = augend.add(addend); 
+    console.assert(result.equals(POS_INF));
+}
+
+@test()
+function test_add_overflow_lower_limit_is_not_infinite() {
+    let augend = Float::new(MAX_EXP, 9998);
+    let addend = Float::new(MAX_EXP, 1);
+    let result = augend.add(addend); 
+    console.assert(!result.equals(POS_INF));
+}
+
+@test()
+function test_add_underflow_is_neg_inf() {
+    let augend = Float::new(-MAX_EXP, -1);
+    let addend = Float::new(-MAX_EXP, -9999);
+    let result = augend.add(addend); 
+    console.assert(!result.equals(NEG_INF));
+}
+
+@test()
 function test_substraction_with_substrahend_lower_than_minuend() {
     let minuend = Float::new(2, 9);
     let substrahend = Float::new(1, 5);
@@ -206,7 +264,7 @@ function test_substraction_with_substrahend_lower_than_minuend() {
     console.assert(minuend.sub(substrahend).equals(difference));
 }
 
-@test
+@test()
 function test_substraction_with_minuend_lower_than_substrahend() {
     let minuend = Float::new(2, 9);
     let substrahend = Float::new(3, 5);
@@ -231,6 +289,44 @@ function test_float_multiplication_neg_exp () {
 
     let product = Float::new(-5, 6);
     console.assert(multiplicand.mul(multiplier).equals(product));
+}
+
+@test()
+function test_mul_overflow_is_infinite() {
+    let augend = Float::new(MAX_EXP / 2 + 2, 1);
+    let addend = Float::new(MAX_EXP / 2 + 2, 1);
+    let result = augend.mul(addend); 
+    console.assert(result.equals(POS_INF));
+}
+
+@test()
+function test_multiply_positive_infinity_times_positive_infinity_results_in_positive_infinity() {
+    let product = POS_INF.mul(POS_INF);
+    console.assert(product.equals(POS_INF));
+}
+
+@test()
+function test_multiply_negative_infinity_times_negative_infinity_results_in_positive_infinity() {
+    let product = NEG_INF.mul(NEG_INF);
+    console.assert(product.equals(POS_INF));
+}
+
+@test()
+function test_multiply_positive_infinity_times_negative_infinity_results_in_negative_infinity() {
+    let product = POS_INF.mul(NEG_INF);
+    console.assert(product.equals(NEG_INF));
+}
+
+@test() 
+function test_multiply_positive_float_times_positive_infinity_results_positive_infinity() {
+    let product = POS_INF.mul(Float::new(3, 4));
+    console.assert(product.equals(POS_INF));
+}
+
+@test() 
+function test_multiply_negative_float_times_positive_infinity_results_negative_infinity() {
+    let product = POS_INF.mul(Float::new(3, -4));
+    console.assert(product.equals(NEG_INF));
 }
 
 @test() 
@@ -268,7 +364,6 @@ function test_division_with_positive_dividend_equal_to_positive_divisor() {
     let dividend = Float::new(8, 7);
     let quotient = Float::new(0, 1);
     let result = dividend.div(divisor);
-    console.log("This should be 1: {}", result);
 
     console.assert(quotient.equals(result));
 }
@@ -279,7 +374,6 @@ function test_division_with_negative_dividend_and_positive_divisor() {
     let dividend = Float::new(5, 1);    
     let quotient = Float::new(-7, -1428);
     let result = dividend.div(divisor);
-    console.log("{}", result);
     console.assert(quotient.equals(result));
 }
 
@@ -289,7 +383,6 @@ function test_division_with_negative_divisor_and_positive_dividend() {
     let dividend = Float::new(5, -1);
     let quotient = Float::new(0, -25);
     let result = dividend.div(divisor);
-    console.log("{}", result);
     console.assert(quotient.equals(result));
 }
 
@@ -299,7 +392,6 @@ function test_division_with_divident_additive_inverse_of_divisor() {
     let divisor = Float::new(8, 7);
     let quotient = Float::new(0, -1);
     let result = dividend.div(divisor);
-    console.log("{}", result);
     console.assert(quotient.equals(result));
 }
 
@@ -309,8 +401,6 @@ function test_division_with_order_of_magnitude_difference_dividend_greater_than_
     let divisor = Float::new(3, 7);
     let quotient = Float::new(5, 1);
     let result = dividend.div(divisor);
-    console.log("Expected result: {}", quotient);
-    console.log("Result: {}", result);
     console.assert(quotient.equals(result));
 }
 
@@ -320,53 +410,38 @@ function test_division_with_order_of_magnitude_difference_dividend_smaller_than_
     let divisor = Float::new(8, 7);
     let quotient = Float::new(-5, 1);
     let result = dividend.div(divisor);
-    console.log("Expected result: {}", quotient);
-    console.log("Result: {}", result);
     console.assert(quotient.equals(result));
 }
 
 @test()
-function test_mul_overflow_is_infinite() {
-    let augend = Float::new(MAX_EXP / 2 + 2, 1);
-    let addend = Float::new(MAX_EXP / 2 + 2, 1);
-    let result = augend.mul(addend); 
-    console.log("Expected result: {}", POS_INF);
-    console.log("Result: {}", result);
-    console.assert(result.equals(POS_INF));
+function test_division_of_positive_float_by_positive_infinite_tends_to_zero() {
+    let dividend = Float::new(3, 7);
+    let quotient = dividend.div(POS_INF);
+
+    console.assert(quotient.fraction == 0 && quotient.exponent == 0);
 }
 
 @test()
-function test_add_big_fractions() {
-    let augend = Float::new(-4, 5000);
-    let addend = Float::new(-4, 5000);
-    let result = augend.add(addend); 
-    console.assert(result.equals(Float::new(0,1)));
+function test_division_positive_infinite_divided_by_positive_infinite_results_NaN() {
+    let quotient = POS_INF.div(POS_INF);
+    console.assert(quotient.equals(NAN));
 }
 
 @test()
-function test_add_overflow_is_infinite() {
-    let augend = Float::new(MAX_EXP, 9999);
-    let addend = Float::new(MAX_EXP, 1);
-    let result = augend.add(addend); 
-    console.log("Expected result: {}", POS_INF);
-    console.log("Result: {}", result);
-    console.assert(result.equals(POS_INF));
+function test_division_positive_infinite_divided_by_negative_infinite_results_NaN() {
+    let quotient = POS_INF.div(NEG_INF);
+    console.assert(quotient.equals(NAN));
+
 }
 
 @test()
-function test_add_overflow_lower_limit_is_not_infinite() {
-    let augend = Float::new(MAX_EXP, 9998);
-    let addend = Float::new(MAX_EXP, 1);
-    let result = augend.add(addend); 
-    console.log("Expected result: {}", POS_INF);
-    console.log("Result: {}", result);
-    console.assert(!result.equals(POS_INF));
+function test_division_negative_infinite_divided_by_negative_infinite_results_NaN() {
+    let quotient = NEG_INF.div(NEG_INF);
+    console.assert(quotient.equals(NAN));
+
 }
 
-@test()
-function test_add_underflow_is_neg_inf() {
-    let augend = Float::new(-MAX_EXP, -1);
-    let addend = Float::new(-MAX_EXP, -9999);
-    let result = augend.add(addend); 
-    console.assert(!result.equals(NEG_INF));
-}
+
+
+
+
