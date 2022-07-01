@@ -52,13 +52,19 @@ circuit Float {
     }
 
     function div(self, rhs: Self) -> Self {
-        let normalized_exponent: i32 = self.exponent - rhs.exponent;
-        let normalized_fraction: i32 = self.fraction / rhs.fraction;
 
-        return normalize(Self{ exponent: normalized_exponent, fraction: normalized_fraction });
+        if(self.equals(rhs)){
+            return Self{ exponent: -3, fraction: 1000 };
+        }else{
+            let normalized_exponent: i32 = self.exponent - rhs.exponent - 4;
+            let normalized_fraction: i32 = ((10000 * self.fraction) / rhs.fraction);
+            return normalize(Self{ exponent: normalized_exponent, fraction: normalized_fraction });
+        }
     }
-
 }
+
+// 1 -> 1000
+// 10000 -/-> 1000 
 
 function normalize(num: Float) -> Float {
     let normalized_exponent: i32 = num.exponent;
@@ -71,7 +77,7 @@ function normalize(num: Float) -> Float {
     }
     return Float { exponent: normalized_exponent, fraction: normalized_fraction };
 }
-
+/*
 @test
 function test_addition_of_floats_with_same_exponent(){
     let augend = Float::new(1, 10);
@@ -197,24 +203,34 @@ function test_float_multiplication_neg_pos_exp () {
     let product = Float::new(-5, -6);
     console.assert(multiplicand.mul(multiplier).equals(product));
 }
-
+*/
 @test()
 function test_division_with_divisor_greater_than_dividend() {
     let divisor = Float::new(3, 4);
     let dividend = Float::new(5, 1);
+    console.log("{}", dividend.div(divisor));
     
     let quotient = Float::new(0, 25);
-    console.log("{}", dividend.div(divisor));
-    console.assert(quotient == dividend.div(divisor));
+    console.assert(quotient.equals(dividend.div(divisor)));
 }
 
 @test()
 function test_division_with_dividend_greater_than_divisor() {
     let divisor = Float::new(8, 7);
     let dividend = Float::new(5, 1);
-    
-    let quotient = Float::new(-3, 7);
     console.log("{}", dividend.div(divisor));
-    console.assert(quotient == dividend.div(divisor));
-
+    
+    let quotient = Float::new(-7, 1428);
+    console.assert(quotient.equals(dividend.div(divisor)));
 }
+
+@test()
+function test_division_with_dividend_equal_to_divisor() {
+    let divisor = Float::new(8, 7);
+    let dividend = Float::new(8, 7);
+    let quotient = Float::new(0, 1);
+    console.log("{}", dividend.div(divisor));
+    console.log("QUOTIENT: {}", quotient);
+    console.assert(quotient.equals(dividend.div(divisor)));
+}
+
