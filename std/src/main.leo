@@ -4,7 +4,6 @@ import array.*;
 import str.*;
 import array.contains as array_contains;
 import str.contains as str_contains;
-
 function main() -> u32  {
     return 0;
 }
@@ -740,5 +739,3 @@ function test_string_does_not_contain_a_permuted_substring() {
 function test_string_contains_is_case_sensitive() {
     console.assert(!str_contains("abcdefghijklmnop", "ABcDefGh"));
 }
-
-
