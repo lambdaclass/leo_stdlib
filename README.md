@@ -98,13 +98,13 @@ it receives the leaf, the proof and the root as arguments. Additionally, it rece
 ### Functions
 
 ```
-is_even(integer: i32) -> i32
+is_even(integer: i32) -> bool
 ```
 Determines if an integer is even.
 Returns `true` if the given integer is an even number, otherwise it returns `false`.
 
 ```
-is_odd(integer: i32) -> i32
+is_odd(integer: i32) -> bool
 ```
 Determines if an integer is odd.
 Returns `true` if the given integer is an odd number, otherwise it returns `false`.
