@@ -2,13 +2,14 @@ import hashing.*;
 import integer.*;
 import array.*;
 import str.*;
+import matrix.sum as matrix_sum;
 import array.contains as array_contains;
 import str.contains as str_contains;
 
 function main() -> u32  {
     return 0;
 }
-
+/*
 // poseidon() tests 
 @test()  
 function test_poseidon_is_same () {
@@ -739,6 +740,29 @@ function test_string_does_not_contain_a_permuted_substring() {
 @test()
 function test_string_contains_is_case_sensitive() {
     console.assert(!str_contains("abcdefghijklmnop", "ABcDefGh"));
+}*/
+
+// matrix sum() tests
+@test()
+function test_sum_zero_matrix_returns_zero_matrix() {
+    let zero_matrix = [[0i32; 28]; 28];
+    
+    console.assert(matrix_sum(zero_matrix, zero_matrix) == zero_matrix);
 }
 
+@test()
+function test_sum_zero_matrix_to_non_zero_matrix_returns_non_zero_matrix() {
+    let zero_matrix = [[0i32; 28]; 28];
+    let matrix = [[1i32; 28]; 28];
+    
+    console.assert(matrix_sum(zero_matrix, matrix) == matrix);
+}
+
+@test()
+function test_sum_two_different_matrix_returns_their_sum() {
+    let matrix1 = [[1i32; 28]; 28];
+    let matrix2 = [[2i32; 28]; 28];
+    
+    console.assert(matrix_sum(matrix1, matrix2) == [[3i32; 28]; 28]);
+}
 
