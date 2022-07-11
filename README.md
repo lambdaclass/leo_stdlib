@@ -65,6 +65,35 @@ contains(array: [i32; 8], element: i32) -> bool
 ```
 Returns `true` if the given `element` belongs to the given `array`. Returns `false` if it does not.
 
+## Matrix
+
+### Functions
+Matrix are represented as a two-dimensional array.
+```
+sum(matrix1: [[i32; 28]; 28], matrix2: [[i32; 28]; 28]) -> [[i32; 28]; 28]
+```
+Returns the sum of two matrix. 
+
+```
+mul(matrix1: [[i32; 28]; 28], matrix2: [[i32; 28]; 28]) -> [[i32; 28]; 28]
+```
+Returns the product of two matrix. 
+
+```
+transpose(matrix: [[i32; 28]; 28]) -> [[i32; 28]; 28]
+```
+Returns a new matrix with the axes transposed.
+
+```
+shuffle([[i32; 28]; 28]) -> [[i32; 28]; 28]
+```
+Randomize the order of the elements in their row.
+
+```
+reshape([[i32; 28]; 28]) -> [i32; 784]
+```
+Returns an array containing the same data, with each row appended to the previous one.
+
 ## Hashing
 
 ### Functions

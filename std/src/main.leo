@@ -3,11 +3,14 @@ import integer.*;
 import array.*;
 import str.*;
 import matrix.sum as matrix_sum;
+import matrix.mul as matrix_mul;
+import matrix.*;
 import array.contains as array_contains;
 import str.contains as str_contains;
 
 function main() -> u32  {
-    return 0;
+    let a = matrix_mul([[0field; 128]; 768], [[1field; 10]; 128]) == [[0field; 10]; 768];
+    return 0u32;
 }
 /*
 // poseidon() tests 
@@ -740,29 +743,129 @@ function test_string_does_not_contain_a_permuted_substring() {
 @test()
 function test_string_contains_is_case_sensitive() {
     console.assert(!str_contains("abcdefghijklmnop", "ABcDefGh"));
-}*/
+}
 
 // matrix sum() tests
 @test()
 function test_sum_zero_matrix_returns_zero_matrix() {
-    let zero_matrix = [[0i32; 28]; 28];
+    let zero_matrix = [[0field; 28]; 28];
     
     console.assert(matrix_sum(zero_matrix, zero_matrix) == zero_matrix);
 }
 
 @test()
 function test_sum_zero_matrix_to_non_zero_matrix_returns_non_zero_matrix() {
-    let zero_matrix = [[0i32; 28]; 28];
-    let matrix = [[1i32; 28]; 28];
+    let zero_matrix = [[0field; 28]; 28];
+    let matrix = [[1field; 28]; 28];
     
     console.assert(matrix_sum(zero_matrix, matrix) == matrix);
 }
 
 @test()
 function test_sum_two_different_matrix_returns_their_sum() {
-    let matrix1 = [[1i32; 28]; 28];
-    let matrix2 = [[2i32; 28]; 28];
+    let matrix1 = [[1field; 28]; 28];
+    let matrix2 = [[2field; 28]; 28];
     
-    console.assert(matrix_sum(matrix1, matrix2) == [[3i32; 28]; 28]);
+    console.assert(matrix_sum(matrix1, matrix2) == [[3field; 28]; 28]);
 }
 
+// matrix mul_square_matrix() tests
+@test()
+function test_mul_zero_square_matrix_returns_zero_matrix() {
+    let zero_matrix = [[0field; 28]; 28];
+    
+    console.assert(mul_square_matrix(zero_matrix, zero_matrix) == zero_matrix);
+}
+
+@test()
+function test_mul_zero_square_matrix_with_non_zero_matrix_returns_zero_matrix() {
+    let zero_matrix = [[0field; 28]; 28];
+    let matrix = [[1field; 28]; 28];
+    
+    console.assert(mul_square_matrix(zero_matrix, matrix) == zero_matrix);
+}
+
+@test()
+function test_mul_two_different_square_matrix_returns_their_product() {
+    let matrix1 = [[1field; 28]; 28];
+    let matrix2 = [[2field; 28]; 28];
+    
+    console.assert(mul_square_matrix(matrix1, matrix2) == [[56field; 28]; 28]);
+}
+
+// matrix mul() tests
+@test()
+function test_mul_zero_non_square_matrix_returns_zero_matrix() {  
+    console.assert(matrix_mul([[0field; 128]; 768], [[0field; 10]; 128]) == [[0field; 10]; 768]);
+}
+
+@test()
+function test_mul_zero_non_square_matrix_with_non_zero_matrix_returns_zero_matrix() {
+    console.assert(matrix_mul([[0field; 128]; 768], [[1field; 10]; 128]) == [[0field; 10]; 768]);
+}
+
+@test()
+function test_mul_two_different_non_square_matrix_returns_their_product() {
+    console.assert(matrix_mul([[1field; 128]; 768], [[2field; 10]; 128]) == [[256field; 10]; 768]);
+}
+*/
+// matrix transpose_square_matrix() tests
+@test()
+function test_transpose_zero_square_matrix_returns_zero_matrix() {  
+    console.assert(transpose_square_matrix([[0field; 28]; 28]) == [[0field; 28]; 28]);
+}
+
+@test()
+function test_mul_non_zero_square_matrix_returns_the_transposed_matrix() {
+    let matrix = [[0field; 28]; 28];
+    let transposed_matrix = [[0field; 28]; 28];
+    let element = 0field;
+    for i in 0..28 {
+        for j in 0..28 {
+            matrix[i][j] = element;
+            element += 1field;
+        }
+        element = 0field;
+    }
+
+    element = 0field;
+    for i in 0..28 {
+        for j in 0..28 {
+            transposed_matrix[i][j] = element;
+        }
+        element += 1field;
+    }
+    // console.log("{MATRIX: }", matrix);
+    // console.log("{TRANSPOSE: }", transposed_matrix);
+    console.assert(transpose_square_matrix(matrix) == transposed_matrix);
+}
+
+// matrix transpose() tests
+@test()
+function test_transpose_zero_non_square_matrix_returns_zero_matrix() {  
+    console.assert(transpose([[0field; 128]; 768]) == [[0field; 128]; 768]);
+}
+
+@test()
+function test_mul_non_zero_non_square_matrix_returns_the_transposed_matrix() {
+    let matrix = [[0field; 128]; 768];
+    let transposed_matrix = [[0field; 128]; 768];
+    let element = 0field;
+    for i in 0..768 {
+        for j in 0..128 {
+            matrix[i][j] = element;
+            element += 1field;
+        }
+        element = 0field;
+    }
+
+    element = 0field;
+    for i in 0..768 {
+        for j in 0..128 {
+            transposed_matrix[i][j] = element;
+        }
+        element += 1field;
+    }
+
+    console.assert(transpose(matrix) == transposed_matrix);
+}
