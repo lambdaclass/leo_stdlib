@@ -8,9 +8,9 @@ function sum(matrix1: [[field; 28]; 28], matrix2: [[field; 28]; 28]) -> [[field;
     return sum;
 }
 
-function mul(matrix1: [[field; 128]; 768], matrix2: [[field; 10]; 128]) -> [[field; 10]; 768] {
-    let product = [[0field; 10]; 768];
-    for i in 0..768 {
+function mul(matrix1: [[field; 128]; 784], matrix2: [[field; 10]; 128]) -> [[field; 10]; 784] {
+    let product = [[0field; 10]; 784];
+    for i in 0..784 {
         for j in 0..10 {
             let sum: field = 0;
             for k in 0..128 {
@@ -36,12 +36,32 @@ function mul_square_matrix(matrix1: [[field; 28]; 28], matrix2: [[field; 28]; 28
     return product;
 }
 
-function transpose(matrix: [[field; 128]; 768]) -> [[field; 128]; 768] {
-    let result = [[0field; 128]; 768];
+function scalar_mul(scalar: field, matrix: [[field; 28]; 28]) -> [[field; 28]; 28] {
+    let product = [[0field; 28]; 28];
+    for i in 0..28 {
+        for j in 0..28 {
+            product[i][j] = scalar * matrix[i][j];
+        }
+    }
+    return product;
+}
 
-    for i in 0..768 {
+function vector_mul(vec: [field; 28], matrix: [[field; 28]; 28]) -> [field; 28] {
+    let product = [0field; 28];
+    for i in 0..28 {
+        for j in 0..28 {
+            product[i] += vec[j] * matrix[i][j];
+        }
+    }
+    return product;
+}
+
+function transpose(matrix: [[field; 128]; 784]) -> [[field; 784]; 128] {
+    let result = [[0field; 784]; 128];
+
+    for i in 0..784 {
         for j in 0..128 {
-            result[i][j] = matrix[j][i];
+            result[j][i] = matrix[i][j];
         }
     }
     return result;
@@ -58,13 +78,18 @@ function transpose_square_matrix(matrix: [[field; 28]; 28]) -> [[field; 28]; 28]
     return result;
 }
 
+function flatten(matrix: [[field; 28]; 28]) -> [field; 784] {
+    let result = [0field; 784];
+    for i in 0..28 {
+        for j in 0..28 {
+            result[28*i+j] = matrix[i][j];
+        }
+    }
+    return result;
+}
 
 /*
 function shuffle(matrix: [[i32; 28]; 28]) -> [[i32; 28]; 28] {
     return [[0i32; 28]; 28];
-}
-
-function reshape(matrix: [[i32; 28]; 28]) -> [i32; 784] {
-    return [0i32; 784];
 }
 */

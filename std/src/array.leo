@@ -50,6 +50,11 @@ function sum(array: [i32; 8]) -> i32 {
     return sum;
 }
 
+function mean(array: [i32; 8]) -> i32 {
+    // return sum(array)/count(array);
+    return sum(array)/8;
+}
+
 function reverse(array: [i32; 8]) -> [i32; 8] {
     let reversed_array = [0i32; 8];
     for i in 0..8 {

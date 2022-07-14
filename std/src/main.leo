@@ -1,5 +1,6 @@
 import hashing.*;
 import integer.*;
+import array.sum as array_sum;
 import array.*;
 import str.*;
 import matrix.sum as matrix_sum;
@@ -9,10 +10,9 @@ import array.contains as array_contains;
 import str.contains as str_contains;
 
 function main() -> u32  {
-    let a = matrix_mul([[0field; 128]; 768], [[1field; 10]; 128]) == [[0field; 10]; 768];
     return 0u32;
 }
-/*
+
 // poseidon() tests 
 @test()  
 function test_poseidon_is_same () {
@@ -497,7 +497,6 @@ function test_array_delete_deletes_only_first_occurrence_when_element_is_repeate
     let array: [i32; 8] = [1, 2, 3, 4, 3, 6, 7, 8];
     let expected_array: [i32; 7] = [1, 2, 4, 3, 6, 7, 8];
 
-    console.log("{}", delete(array, 3));
     console.assert(expected_array == delete(array, 3));
 }
 
@@ -581,7 +580,7 @@ function test_sum_adds_all_elements_in_array() {
     let array: [i32; 8] = [2, 4, 6, 8, 10, 12, 14, 16];
     let sum: i32 = 72;
 
-    console.assert(sum == sum(array));
+    console.assert(sum == array_sum(array));
 }
 
 @test()
@@ -589,7 +588,7 @@ function test_sum_adds_all_elements_in_array_with_positive_and_negative_integers
     let array: [i32; 8] = [2, -4, -6, 8, 10, -12, 14, 16];
     let sum: i32 = 28;
 
-    console.assert(sum == sum(array));
+    console.assert(sum == array_sum(array));
 }
 
 @test()
@@ -599,6 +598,21 @@ function test_array_is_reversed() {
     console.assert(reversed_array == reverse(array));
 }
 
+// array mean() tests
+@test()
+function test_mean_in_zero_array_equals_zero() {
+    let array = [0i32; 8];
+
+    console.assert(0i32 == mean(array));
+}
+
+@test()
+function test_mean_in_non_zero_array_equals_mean() {
+    let array: [i32; 8] = [0, 1, 2, 3, 4, 5, 6, 7];
+
+    console.assert(3 == mean(array));
+}
+ 
 // array contains() tests
 @test()
 function test_array_contains_an_element() {
@@ -796,19 +810,19 @@ function test_mul_two_different_square_matrix_returns_their_product() {
 // matrix mul() tests
 @test()
 function test_mul_zero_non_square_matrix_returns_zero_matrix() {  
-    console.assert(matrix_mul([[0field; 128]; 768], [[0field; 10]; 128]) == [[0field; 10]; 768]);
+    console.assert(matrix_mul([[0field; 128]; 784], [[0field; 10]; 128]) == [[0field; 10]; 784]);
 }
 
 @test()
 function test_mul_zero_non_square_matrix_with_non_zero_matrix_returns_zero_matrix() {
-    console.assert(matrix_mul([[0field; 128]; 768], [[1field; 10]; 128]) == [[0field; 10]; 768]);
+    console.assert(matrix_mul([[0field; 128]; 784], [[1field; 10]; 128]) == [[0field; 10]; 784]);
 }
 
 @test()
 function test_mul_two_different_non_square_matrix_returns_their_product() {
-    console.assert(matrix_mul([[1field; 128]; 768], [[2field; 10]; 128]) == [[256field; 10]; 768]);
+    console.assert(matrix_mul([[1field; 128]; 784], [[2field; 10]; 128]) == [[256field; 10]; 784]);
 }
-*/
+
 // matrix transpose_square_matrix() tests
 @test()
 function test_transpose_zero_square_matrix_returns_zero_matrix() {  
@@ -835,23 +849,22 @@ function test_mul_non_zero_square_matrix_returns_the_transposed_matrix() {
         }
         element += 1field;
     }
-    // console.log("{MATRIX: }", matrix);
-    // console.log("{TRANSPOSE: }", transposed_matrix);
+
     console.assert(transpose_square_matrix(matrix) == transposed_matrix);
 }
 
 // matrix transpose() tests
 @test()
 function test_transpose_zero_non_square_matrix_returns_zero_matrix() {  
-    console.assert(transpose([[0field; 128]; 768]) == [[0field; 128]; 768]);
+    console.assert(transpose([[0field; 128]; 784]) == [[0field; 784]; 128]);
 }
 
 @test()
 function test_mul_non_zero_non_square_matrix_returns_the_transposed_matrix() {
-    let matrix = [[0field; 128]; 768];
-    let transposed_matrix = [[0field; 128]; 768];
+    let matrix = [[0field; 128]; 784];
+    let transposed_matrix = [[0field; 784]; 128];
     let element = 0field;
-    for i in 0..768 {
+    for i in 0..784 {
         for j in 0..128 {
             matrix[i][j] = element;
             element += 1field;
@@ -860,12 +873,73 @@ function test_mul_non_zero_non_square_matrix_returns_the_transposed_matrix() {
     }
 
     element = 0field;
-    for i in 0..768 {
-        for j in 0..128 {
+    for i in 0..128 {
+        for j in 0..784 {
             transposed_matrix[i][j] = element;
         }
         element += 1field;
     }
 
     console.assert(transpose(matrix) == transposed_matrix);
+}
+
+// matrix scalar_mul() tests
+@test()
+function test_scalar_mul_zero_square_matrix_returns_zero_matrix() {
+    let zero_matrix = [[0field; 28]; 28];
+    
+    console.assert(scalar_mul(4field, zero_matrix) == zero_matrix);
+}
+
+@test()
+function test_scalar_mul_zero_with_non_zero_matrix_returns_zero_matrix() {
+    let zero_matrix = [[0field; 28]; 28];
+    let matrix = [[1field; 28]; 28];
+    
+    console.assert(scalar_mul(0field, matrix) == zero_matrix);
+}
+
+@test()
+function test_scalar_mul_with_matrix_returns_their_product() {
+    let matrix = [[1field; 28]; 28];
+    let expected_matrix = [[3field; 28]; 28];
+    
+    console.assert(scalar_mul(3field, matrix) == expected_matrix);
+}
+
+// matrix vector_mul() tests
+@test()
+function test_vector_mul_zero_square_matrix_returns_zero_matrix() {
+    let zero_matrix = [[0field; 28]; 28];
+    
+    console.assert(vector_mul([4field; 28], zero_matrix) == [0field; 28]);
+}
+
+@test()
+function test_vector_mul_zero_with_non_zero_matrix_returns_zero_matrix() {
+    let zero_matrix = [[0field; 28]; 28];
+    let matrix = [[1field; 28]; 28];
+    
+    console.assert(vector_mul([0field; 28], matrix) == [0field; 28]);
+}
+
+@test()
+function test_vector_mul_with_matrix_returns_their_product() {
+    let matrix = [[1field; 28]; 28];
+    
+    console.assert(vector_mul([2field; 28], matrix) == [56field; 28]);
+}
+
+
+// matrix flatten() tests
+@test()
+function test_zero_matrix_flatten() {
+    let zero_matrix = [[0field; 28]; 28];
+    console.assert(flatten(zero_matrix) == [0field; 784]);
+}
+
+@test()
+function test_matrix_flatten() {
+    let matrix = [[5field; 28]; 28];
+    console.assert(flatten(matrix) == [5field; 784]);
 }
