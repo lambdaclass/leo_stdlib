@@ -1,4 +1,4 @@
-# Leo Standard Library
+# Leo Non Official Standard Library
 
 Standard library for the Leo Language
 
